@@ -1,6 +1,6 @@
 import { FC, MouseEvent } from 'react';
 import { Link as UiLink, LinkProps } from '@gravity-ui/uikit';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export const Link: FC<LinkProps> = (props) => {
   const navigate = useNavigate();
