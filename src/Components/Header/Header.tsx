@@ -11,7 +11,7 @@ export const Header = () => {
       setTimeout(() => {
         console.log(data);
         resolve();
-      }, 1000);
+      }, 500);
     });
 
     return end;

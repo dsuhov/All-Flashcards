@@ -6,22 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "concurrently  \"eslint .\" \"tsc --project tsconfig.app.json --noEmit\"",
-    "test": "jest",
+    "lint": "eslint .",
+    "lint:types": "tsc --project ./tsconfig.app.json --noEmit",
+    "test": "jest .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --cache --write",
-      "npm run lint",
-      "npm run test"
-    ],
-    "*.js": [
-      "prettier --cache --write",
-      "eslint ."
-    ]
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -46,7 +36,6 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
-    "concurrently": "^9.1.2",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
