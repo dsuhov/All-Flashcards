@@ -13,10 +13,14 @@
     "build-storybook": "storybook build"
   },
   "lint-staged": {
-    "*.{js,ts.tsx}": [
+    "*.{ts.tsx}": [
       "prettier --cache --write",
       "npm run lint",
       "npm run test"
+    ],
+    "*.{js}": [
+      "prettier --cache --write",
+      "eslint ."
     ]
   },
   "dependencies": {
