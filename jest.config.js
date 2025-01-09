@@ -1,11 +1,12 @@
+import { createDefaultPreset } from 'ts-jest';
+
 export default {
   testEnvironment: 'jsdom',
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
-        tsconfig: 'tsconfig.app.json',
-        diagnostics: { ignoreCodes: ['TS151001'] },
+        tsconfig: 'tsconfig.test.json',
       },
     ],
   },
@@ -13,6 +14,7 @@ export default {
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     '^.+\\.svg$': 'jest-transformer-svg',
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
 
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],

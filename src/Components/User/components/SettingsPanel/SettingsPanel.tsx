@@ -11,6 +11,7 @@ import {
 } from '@gravity-ui/uikit';
 
 import { SettingsPanelProps } from './interfaces';
+import { DEFAULT_TEST_ID } from '../../constants';
 
 const langOptions: RadioGroupOption[] = [
   { content: 'Русский', value: 'rus' },
@@ -26,7 +27,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
   const { onClose, onChangeSettings, userSettings } = props;
 
   const [options, setOptions] = useState(userSettings);
-  const [slider, setSlider] = useState(userSettings.studySessionCards);
+  const [slider, setSlider] = useState(userSettings.studySessionCards || 5);
 
   const onChangeSettingsHandler = () => {
     onChangeSettings(options).then(() => onClose());
@@ -61,7 +62,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
   };
 
   return (
-    <Box spacing={{ p: 4 }}>
+    <Box spacing={{ p: 4 }} data-testid={DEFAULT_TEST_ID}>
       <Flex direction="column" gap={3}>
         <Box>
           <Box spacing={{ mb: 2 }}>
@@ -103,10 +104,15 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
           <Checkbox onChange={onAllCardshandler}>Все</Checkbox>
         </Box>
         <Flex gap={2}>
-          <Button size="l" onClick={onClose}>
+          <Button size="l" onClick={onClose} title="Отмена">
             Отмена
           </Button>
-          <Button size="l" view="action" onClick={onChangeSettingsHandler}>
+          <Button
+            size="l"
+            view="action"
+            title="Применить"
+            onClick={onChangeSettingsHandler}
+          >
             Применить
           </Button>
         </Flex>

@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { DropdownMenu, Text, Icon, Modal } from '@gravity-ui/uikit';
 import { ArrowRightFromSquare } from '@gravity-ui/icons';
 
-import { SettingsPanel } from '@/Components/User/components/SettingsPanel';
+import { SettingsPanel } from '@/Components/User/components/SettingsPanel/SettingsPanel';
 import { UserProps } from './interfaces';
 import styles from './styles.module.css';
 
@@ -32,11 +32,13 @@ export const User: FC<UserProps> = (props) => {
           {
             action: onSettingshandler,
             text: 'Настройки',
+            title: 'Настройки',
           },
           {
             action: onExit,
             iconEnd: <Icon size={16} data={ArrowRightFromSquare} />,
             text: 'Выйти',
+            title: 'Выйти',
           },
         ]}
       />
