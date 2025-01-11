@@ -28,13 +28,23 @@ const scopeBad = fork({
   handlers: [
     [
       loginFx,
-      () => {
+      async () => {
+        await new Promise<void>((res) =>
+          setTimeout(() => {
+            res();
+          }, 400)
+        );
         throw new Error('Login error');
       },
     ],
     [
       signinFx,
-      () => {
+      async () => {
+        await new Promise<void>((res) =>
+          setTimeout(() => {
+            res();
+          }, 400)
+        );
         throw new Error('Register error');
       },
     ],

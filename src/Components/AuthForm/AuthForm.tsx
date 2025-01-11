@@ -1,4 +1,13 @@
-import { Card, Flex, Text, TextInput, Button, Alert } from '@gravity-ui/uikit';
+import {
+  Card,
+  Flex,
+  Text,
+  TextInput,
+  Button,
+  Alert,
+  Icon,
+} from '@gravity-ui/uikit';
+import { Eye, EyeSlash } from '@gravity-ui/icons';
 import { useState, FormEvent } from 'react';
 import { useUnit } from 'effector-react';
 
@@ -18,6 +27,8 @@ import { fieldsErrors } from './constants';
 
 export const AuthForm = () => {
   const [isRegistration, setIsregistration] = useState(false);
+  const [isPasswVis, setIsPasswVis] = useState(false);
+
   const [
     email,
     password,
@@ -64,13 +75,24 @@ export const AuthForm = () => {
           />
           <TextInput
             label="Пароль"
-            type="password"
+            type={isPasswVis ? 'text' : 'password'}
             value={password}
             name="Пароль"
             onChange={(evt) => handlePasswordChange(evt.target.value)}
             validationState={passwordError ? 'invalid' : undefined}
             errorMessage={passwordError && fieldsErrors[passwordError]}
             disabled={pending}
+            size="m"
+            endContent={
+              <Button
+                view="flat"
+                size="s"
+                onClick={() => setIsPasswVis((prev) => !prev)}
+                title="Показать пароль"
+              >
+                <Icon data={isPasswVis ? Eye : EyeSlash} />
+              </Button>
+            }
           />
           {error && (
             <Alert
@@ -85,13 +107,14 @@ export const AuthForm = () => {
             type="button"
             onClick={() => setIsregistration((prev) => !prev)}
             disabled={pending}
+            title={isRegistration ? 'Вход' : 'Регистрация'}
           >
             {isRegistration ? 'Вход' : 'Регистрация'}
           </Button>
           <Flex gap={2}>
             <Button
               type="submit"
-              title="Войти"
+              title={isRegistration ? 'Зарегистрироваться' : 'Войти'}
               view="action"
               width="max"
               loading={pending}

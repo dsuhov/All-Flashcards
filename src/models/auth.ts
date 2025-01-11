@@ -88,7 +88,12 @@ $error.on(
 
 reset({
   clock: [signinFx.done, loginFx.done],
-  target: [$error, $passwordError, $email, $password],
+  target: [$emailError, $passwordError, $email, $password],
+});
+
+reset({
+  clock: formSubmitted,
+  target: $error,
 });
 
 function isEmpty(input: string) {
