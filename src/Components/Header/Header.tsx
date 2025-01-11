@@ -1,4 +1,7 @@
 import { Flex, Box, Text } from '@gravity-ui/uikit';
+import { signOut } from 'firebase/auth';
+import { firebaseAuth } from '@/firebase.config';
+import { toaster } from '@/shared/toaster';
 
 import { UserSettings } from '@/types/user';
 import { Link } from '@/Components/Link';
@@ -17,6 +20,23 @@ export const Header = () => {
     return end;
   };
 
+  const onExithandler = () => {
+    try {
+      signOut(firebaseAuth);
+    } catch (err) {
+      if (err instanceof Error) {
+        toaster.add({
+          name: 'common error',
+          title: err.message,
+          content: 'sfd',
+          theme: 'danger',
+          autoHiding: 5000,
+          isClosable: false,
+        });
+      }
+    }
+  };
+
   return (
     <Box as="header" spacing={{ p: 2, mb: 3 }} className={styles.headder}>
       <Flex>
@@ -26,7 +46,7 @@ export const Header = () => {
         <Flex justifyContent="right" alignItems="center" grow={1}>
           <Text variant="body-1">
             <User
-              onExit={() => alert('Exit clicked')}
+              onExit={onExithandler}
               username="Демидрол Суходрищев"
               onChangeSettings={onChangeSettings}
               userSettings={{

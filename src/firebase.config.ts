@@ -1,7 +1,9 @@
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 // import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-const firebaseConfig = JSON.parse(import.meta.env.FIREBASE_CONFIG);
+const firebaseConfig = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 
 export const app = initializeApp(firebaseConfig);
 
@@ -13,3 +15,5 @@ export const app = initializeApp(firebaseConfig);
 //   const cityList = citySnapshot.docs.map(doc => doc.data());
 //   return cityList;
 // }
+export const firebaseAuth = getAuth();
+export const db = getFirestore(app);
