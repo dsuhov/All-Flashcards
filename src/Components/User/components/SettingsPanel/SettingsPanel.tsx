@@ -70,7 +70,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
           </Box>
           <RadioGroup
             name="language"
-            defaultValue={langOptions[0].value}
+            defaultValue={options.language}
             options={langOptions}
             onChange={onRadioChange}
           />
@@ -81,7 +81,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
           </Box>
           <RadioGroup
             name="theme"
-            defaultValue={themeOptions[0].value}
+            defaultValue={options.theme}
             options={themeOptions}
             onChange={onRadioChange}
           />
@@ -98,10 +98,18 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
               hasTooltip
               marks={[5, 10, 15, 20]}
               onUpdate={onCardsChangeHandler}
+              defaultValue={
+                options.studySessionCards !== 0 ? options.studySessionCards : 5
+              }
               disabled={options.studySessionCards === 0}
             />
           </Box>
-          <Checkbox onChange={onAllCardshandler}>Все</Checkbox>
+          <Checkbox
+            onChange={onAllCardshandler}
+            checked={options.studySessionCards === 0}
+          >
+            Все
+          </Checkbox>
         </Box>
         <Flex gap={2}>
           <Button size="l" onClick={onClose} title="Отмена">

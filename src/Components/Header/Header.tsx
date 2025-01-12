@@ -2,22 +2,21 @@ import { Flex, Box, Text } from '@gravity-ui/uikit';
 import { signOut } from 'firebase/auth';
 import { firebaseAuth } from '@/firebase.config';
 import { toaster } from '@/shared/toaster';
+import { useUnit } from 'effector-react';
 
 import { UserSettings } from '@/types/user';
 import { Link } from '@/Components/Link';
 import { User } from '@/Components/User';
+import { $settings, settingsUpdated } from '@/models/settings';
 import styles from './styles.module.css';
 
 export const Header = () => {
-  const onChangeSettings = async (data: UserSettings) => {
-    const end = await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        console.log(data);
-        resolve();
-      }, 500);
-    });
+  const [settings] = useUnit([$settings]);
 
-    return end;
+  const onChangeSettings = async (data: UserSettings) => {
+    settingsUpdated(data);
+
+    return Promise.resolve();
   };
 
   const onExithandler = () => {
@@ -36,6 +35,7 @@ export const Header = () => {
       }
     }
   };
+  console.log(settings);
 
   return (
     <Box as="header" spacing={{ p: 2, mb: 3 }} className={styles.headder}>
@@ -49,11 +49,7 @@ export const Header = () => {
               onExit={onExithandler}
               username="Демидрол Суходрищев"
               onChangeSettings={onChangeSettings}
-              userSettings={{
-                language: 'rus',
-                studySessionCards: 5,
-                theme: 'light',
-              }}
+              userSettings={settings}
             />
           </Text>
         </Flex>
