@@ -1,4 +1,4 @@
-import { FC, useState, ChangeEvent } from 'react';
+import { FC, useState, ChangeEvent, useMemo } from 'react';
 import {
   Button,
   Box,
@@ -13,21 +13,30 @@ import {
 import { SettingsPanelProps } from './interfaces';
 import { DEFAULT_TEST_ID } from '../../constants';
 
-const langOptions: RadioGroupOption[] = [
-  { content: 'Русский', value: 'rus' },
-  { content: 'Английский', value: 'eng' },
-];
-
-const themeOptions: RadioGroupOption[] = [
-  { content: 'Светлая', value: 'light' },
-  { content: 'Темная', value: 'dark' },
-];
+import { useTranslation } from 'react-i18next';
 
 export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
+  const { t } = useTranslation();
   const { onClose, onChangeSettings, userSettings } = props;
 
   const [options, setOptions] = useState(userSettings);
   const [slider, setSlider] = useState(userSettings.studySessionCards || 5);
+
+  const langOptions: RadioGroupOption[] = useMemo(
+    () => [
+      { content: 'Русский', value: 'rus' },
+      { content: 'English', value: 'eng' },
+    ],
+    []
+  );
+
+  const themeOptions: RadioGroupOption[] = useMemo(
+    () => [
+      { content: t('settings.light'), value: 'light' },
+      { content: t('settings.dark'), value: 'dark' },
+    ],
+    []
+  );
 
   const onChangeSettingsHandler = () => {
     onChangeSettings(options).then(() => onClose());
@@ -66,7 +75,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
       <Flex direction="column" gap={3}>
         <Box>
           <Box spacing={{ mb: 2 }}>
-            <Text variant="subheader-2">Язык</Text>
+            <Text variant="subheader-2">{t('settings.lang')}</Text>
           </Box>
           <RadioGroup
             name="language"
@@ -77,7 +86,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
         </Box>
         <Box>
           <Box spacing={{ mb: 2 }}>
-            <Text variant="subheader-2">Тема</Text>
+            <Text variant="subheader-2">{t('settings.theme')}</Text>
           </Box>
           <RadioGroup
             name="theme"
@@ -88,7 +97,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
         </Box>
         <Box>
           <Box spacing={{ mb: 2 }}>
-            <Text variant="subheader-2">Карточек для изучения</Text>
+            <Text variant="subheader-2">{t('settings.cardsToLearn')}</Text>
           </Box>
           <Box spacing={{ mb: 2 }}>
             <Slider
@@ -108,20 +117,26 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
             onChange={onAllCardshandler}
             checked={options.studySessionCards === 0}
           >
-            Все
+            {t('settings.all')}
           </Checkbox>
         </Box>
         <Flex gap={2}>
-          <Button size="l" onClick={onClose} title="Отмена">
-            Отмена
-          </Button>
           <Button
             size="l"
+            onClick={onClose}
+            title={t('common.cancel')}
+            width="max"
+          >
+            {t('common.cancel')}
+          </Button>
+          <Button
+            width="max"
+            size="l"
             view="action"
-            title="Применить"
+            title={t('common.apply')}
             onClick={onChangeSettingsHandler}
           >
-            Применить
+            {t('common.apply')}
           </Button>
         </Flex>
       </Flex>

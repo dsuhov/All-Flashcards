@@ -1,4 +1,5 @@
 import { createStore, createEvent, sample, createEffect } from 'effector';
+import { i18n } from '@/i18n/i18n.config';
 
 import { UserSettings, UserData } from '@/types/user';
 import { DEFAULT_USER_SETTINGS } from '@/constants';
@@ -46,6 +47,15 @@ sample({
   target: checkSettingsFx,
 });
 
+sample({
+  clock: checkSettingsFx.doneData,
+  fn: (clockData) => {
+    if (i18n.language !== clockData.language) {
+      i18n.changeLanguage(clockData.language);
+    }
+  },
+});
+
 $settings.on(checkSettingsFx.doneData, (_, settings) => settings);
 
 $settings.on(settingsChecked, (prev, userId) => {
@@ -59,6 +69,7 @@ $settings.on(settingsChecked, (prev, userId) => {
 export const setSettingsFx = createEffect<SettingsFX, UserSettings>(
   ({ userId, settings }) => {
     localStorage.setItem(userId, JSON.stringify(settings));
+    i18n.changeLanguage(settings.language);
 
     return settings;
   }

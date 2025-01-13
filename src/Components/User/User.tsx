@@ -1,12 +1,14 @@
 import { FC, useState } from 'react';
 import { DropdownMenu, Text, Icon, Modal } from '@gravity-ui/uikit';
 import { ArrowRightFromSquare } from '@gravity-ui/icons';
+import { useTranslation } from 'react-i18next';
 
 import { SettingsPanel } from '@/Components/User/components/SettingsPanel/SettingsPanel';
 import { UserProps } from './interfaces';
 import styles from './styles.module.css';
 
 export const User: FC<UserProps> = (props) => {
+  const { t } = useTranslation();
   const { username, onExit, onChangeSettings, userSettings } = props;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -31,14 +33,14 @@ export const User: FC<UserProps> = (props) => {
         items={[
           {
             action: onSettingshandler,
-            text: 'Настройки',
-            title: 'Настройки',
+            text: t('settings'),
+            title: t('settings'),
           },
           {
             action: onExit,
             iconEnd: <Icon size={16} data={ArrowRightFromSquare} />,
-            text: 'Выйти',
-            title: 'Выйти',
+            text: t('logout'),
+            title: t('logout'),
           },
         ]}
       />

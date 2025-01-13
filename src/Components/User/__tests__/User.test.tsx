@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { ThemeProvider } from '@gravity-ui/uikit';
 
+import '@/i18n/i18n.config';
 import { User, UserProps } from '..';
 import { UserSettings } from '@/types/user';
 import { DEFAULT_USER_SETTINGS } from '@/constants';
@@ -103,7 +104,7 @@ describe('User tests', () => {
     await userEvent.click(userElement);
 
     await userEvent.click(screen.getByText('Настройки'));
-    await userEvent.click(screen.getByText('Английский'));
+    await userEvent.click(screen.getByText('English'));
     await userEvent.click(screen.getByText('Темная'));
     await userEvent.click(screen.getByText('Все'));
     await userEvent.click(screen.getByTitle('Применить'));
@@ -139,7 +140,7 @@ describe('User tests', () => {
     await userEvent.click(userElement);
 
     await userEvent.click(screen.getByText('Настройки'));
-    await userEvent.click(screen.getByText('Английский'));
+    await userEvent.click(screen.getByText('English'));
     await userEvent.click(screen.getByText('Темная'));
     await userEvent.click(screen.getByText('Все'));
     await userEvent.click(screen.getByText('Все'));

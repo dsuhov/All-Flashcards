@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { Provider } from 'effector-react';
 import { ThemeProvider } from '@gravity-ui/uikit';
+
+import '@/i18n/i18n.config';
 import { AuthForm } from '../AuthForm';
 import { loginFx, signinFx } from '@/transport/auth';
 import { fork, Scope } from 'effector';

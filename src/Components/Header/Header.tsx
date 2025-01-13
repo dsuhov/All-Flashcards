@@ -7,11 +7,14 @@ import { useUnit } from 'effector-react';
 import { UserSettings } from '@/types/user';
 import { Link } from '@/Components/Link';
 import { User } from '@/Components/User';
+import { $userData } from '@/models/auth';
 import { $settings, settingsUpdated } from '@/models/settings';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
 export const Header = () => {
-  const [settings] = useUnit([$settings]);
+  const { t } = useTranslation();
+  const [settings, userData] = useUnit([$settings, $userData]);
 
   const onChangeSettings = async (data: UserSettings) => {
     settingsUpdated(data);
@@ -25,9 +28,9 @@ export const Header = () => {
     } catch (err) {
       if (err instanceof Error) {
         toaster.add({
-          name: 'common error',
+          name: t('error'),
           title: err.message,
-          content: 'sfd',
+          content: t('smthGoneWrong'),
           theme: 'danger',
           autoHiding: 5000,
           isClosable: false,
@@ -35,7 +38,6 @@ export const Header = () => {
       }
     }
   };
-  console.log(settings);
 
   return (
     <Box as="header" spacing={{ p: 2, mb: 3 }} className={styles.headder}>
@@ -47,7 +49,7 @@ export const Header = () => {
           <Text variant="body-1">
             <User
               onExit={onExithandler}
-              username="Демидрол Суходрищев"
+              username={userData?.username || ''}
               onChangeSettings={onChangeSettings}
               userSettings={settings}
             />

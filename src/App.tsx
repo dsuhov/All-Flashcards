@@ -7,6 +7,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '@/firebase.config';
 import { userStatusChecked, userAssigned } from '@/models/auth';
 import { UserData } from '@/types/user';
+import '@/i18n/i18n.config';
 
 onAuthStateChanged(firebaseAuth, (user) => {
   if (user) {
