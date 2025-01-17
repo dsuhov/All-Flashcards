@@ -5,7 +5,7 @@ import { ThemeProvider } from '@gravity-ui/uikit';
 
 import '@/i18n/i18n.config';
 import { AuthForm } from '../AuthForm';
-import { loginFx, signinFx } from '@/transport/auth';
+import { loginFx, signinFx } from '@/models/auth';
 import { fork, Scope } from 'effector';
 import { $webauthnPending } from '@/models/auth';
 import { fieldsErrors } from '../constants';

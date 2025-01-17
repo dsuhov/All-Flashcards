@@ -13,6 +13,10 @@ export const translations = {
       'settings.theme': 'Theme',
       'settings.cardsToLearn': 'Cards in learning session',
       'settings.all': 'All',
+
+      'add_deck.add': 'Add deck',
+      'add_deck.find': 'Find word...',
+      'add_deck.input_title': 'Search',
     },
   },
   rus: {
@@ -29,6 +33,10 @@ export const translations = {
       'settings.theme': 'Тема',
       'settings.cardsToLearn': 'Карточек для изучения',
       'settings.all': 'Все',
+
+      'add_deck.add': 'Добавить набор',
+      'add_deck.find': 'Найти слово...',
+      'add_deck.input_title': 'Поиск',
     },
   },
 };

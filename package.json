@@ -14,6 +14,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "firebase": "^11.1.0",
     "i18next": "^24.2.1",
     "patronum": "^2.3.0",

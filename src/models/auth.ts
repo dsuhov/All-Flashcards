@@ -1,8 +1,16 @@
-import { createStore, createEvent, combine, sample } from 'effector';
+import {
+  createStore,
+  createEvent,
+  createEffect,
+  combine,
+  sample,
+} from 'effector';
 import { every, or, reset } from 'patronum';
 
-import { UserData } from '@/types/user';
-import { loginFx, signinFx } from '@/transport/auth';
+import { UserData, AuthData } from '@/types/user';
+import { doLogin, doSignIn } from '@/transport/auth';
+
+/** STORES */
 
 export const $userData = createStore<UserData | null>(null);
 export const userAssigned = createEvent<UserData | null>();
@@ -19,12 +27,28 @@ export const $passwordError = createStore<null | 'empty' | 'tooShort'>(null);
 export const $webauthnPending = createStore(false);
 export const $error = createStore('');
 
+/** ACTIONS */
+
 export const emailChanged = createEvent<string>();
 export const passwordChanged = createEvent<string>();
 export const formSubmitted = createEvent<'login' | 'signin'>();
 
+/** EFFECTS */
+
+export const loginFx = createEffect<AuthData, void, Error>(doLogin);
+
+export const signinFx = createEffect<AuthData, void, Error>(doSignIn);
+
+/** LOGIC */
+
+/** the store is used to ensure that when app has started it have info,
+ * is there a user or user hasn't logged in yet
+ */
 $userStatus.on(userStatusChecked, (_, isStatusChecked) => isStatusChecked);
+/** retireve user data from firebase auth status listener */
 $userData.on(userAssigned, (_, userData) => userData);
+
+/** auth form  */
 
 // reset error when start typing
 reset({

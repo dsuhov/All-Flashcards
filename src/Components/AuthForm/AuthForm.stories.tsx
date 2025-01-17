@@ -4,7 +4,7 @@ import { fork } from 'effector';
 import { Provider } from 'effector-react';
 
 import { AuthForm } from './AuthForm';
-import { loginFx, signinFx } from '@/transport/auth';
+import { loginFx, signinFx } from '@/models/auth';
 import { $webauthnPending, $email, $password } from '@/models/auth';
 
 type Story = StoryObj<typeof AuthForm>;

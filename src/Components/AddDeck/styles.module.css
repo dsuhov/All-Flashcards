@@ -1,0 +1,9 @@
+.addDeck {
+  backdrop-filter: blur(10px);
+  border-radius: 0 0 8px 8px;
+  padding: 20px;
+}
+
+.input {
+  max-width: 300px;
+}
