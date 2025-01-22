@@ -40,7 +40,7 @@ export const Header = () => {
   };
 
   return (
-    <Box as="header" spacing={{ p: 2, mb: 3 }} className={styles.headder}>
+    <Box as="header" spacing={{ p: 2, mb: 2 }} className={styles.headder}>
       <Flex>
         <Link href="/" title="home">
           <Text variant="header-1">F-Cards</Text>

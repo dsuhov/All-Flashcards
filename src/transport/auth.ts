@@ -1,9 +1,10 @@
-import { collection, addDoc } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
+import { USERS_COLLECTION } from '@/constants';
 import { AuthData, UserData } from '@/types/user';
 import { firebaseAuth, db } from '@/firebase.config';
 
@@ -29,5 +30,5 @@ export const doSignIn = async ({
     userId: userCredential.user.uid,
   };
 
-  await addDoc(collection(db, 'users'), newUser);
+  await setDoc(doc(db, USERS_COLLECTION, userCredential.user.uid), newUser);
 };

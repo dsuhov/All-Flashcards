@@ -16,6 +16,11 @@ const meta: Meta<typeof AddDeck> = {
 export const AddDeckStory: Story = {
   args: {
     onAddDeckClick: fn(),
+    inputFieldOpen: false,
+    onDeckNameInputChange: fn(),
+    onSave: fn(),
+    deckNameNameValue: '',
+    pending: false,
   },
 };
 

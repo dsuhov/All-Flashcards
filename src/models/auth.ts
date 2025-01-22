@@ -12,6 +12,7 @@ import { doLogin, doSignIn } from '@/transport/auth';
 
 /** STORES */
 
+// temporary
 export const $userData = createStore<UserData | null>(null);
 export const userAssigned = createEvent<UserData | null>();
 

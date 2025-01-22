@@ -1,9 +1,7 @@
-import { createDefaultPreset } from 'ts-jest';
-
 export default {
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.tsx?$': [
+    '^.+\\.[tj]sx?$': [
       'ts-jest',
       {
         tsconfig: 'tsconfig.test.json',
