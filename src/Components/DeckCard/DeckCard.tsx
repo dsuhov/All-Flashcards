@@ -84,7 +84,7 @@ export const DeckCard = (props: DeckProps) => {
               size="s"
               title={t('deck.toLearn')}
               onClick={onLearnClickHandler}
-              href={`${linkTitle}/${DECKS_ROUTE}/${LEARN_ROUTE}`}
+              href={`${DECKS_ROUTE}/${linkTitle}/${LEARN_ROUTE}`}
             >
               {`${t('deck.toLearn')}: ${entriesToLearn}`}
             </Button>

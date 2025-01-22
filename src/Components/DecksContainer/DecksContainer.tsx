@@ -47,19 +47,25 @@ export const DecksContainer = () => {
     deckNameInputSaved,
   ]);
 
-  const decks = filledDecks.map((decksData) => (
-    <DeckCard
-      deckId={decksData.deckId}
-      title={decksData.title}
-      linkTitle={decksData.linkTitle}
-      entriesQuantity={decksData.entriesQuantity}
-      entriesToLearn={decksData.entriesToLearn}
-      onMellowing={decksData.onMellowing}
-      entrieslearned={decksData.entrieslearned}
-      key={decksData.deckId}
-      onDelete={(deckId) => console.log('delete ', deckId)}
-    />
-  ));
+  const decks = filledDecks
+    .sort((a, b) => {
+      if (a.title < b.title) return -1;
+      if (a.title > b.title) return 1;
+      return 0;
+    })
+    .map((decksData) => (
+      <DeckCard
+        deckId={decksData.deckId}
+        title={decksData.title}
+        linkTitle={decksData.linkTitle}
+        entriesQuantity={decksData.entriesQuantity}
+        entriesToLearn={decksData.entriesToLearn}
+        onMellowing={decksData.onMellowing}
+        entrieslearned={decksData.entrieslearned}
+        key={decksData.deckId}
+        onDelete={(deckId) => console.log('delete ', deckId)}
+      />
+    ));
 
   return (
     <Box>
@@ -76,7 +82,7 @@ export const DecksContainer = () => {
       />
       <Flex direction="column" gap={2} spacing={{ mt: 2 }}>
         {decks}
-        {loadingDecks && (
+        {!decks && loadingDecks && (
           <Flex justifyContent="center">
             <Loader size="m" />
           </Flex>

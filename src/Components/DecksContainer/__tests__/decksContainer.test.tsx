@@ -34,6 +34,15 @@ describe('Decks Container tests', () => {
 
   it('renders components with no decks', async () => {
     const scope = fork({
+      values: [
+        [
+          $userData,
+          {
+            username: 'my-usrname',
+            userId: '1111',
+          },
+        ],
+      ],
       handlers: [
         [addDeckFx, () => []],
         [getDecksFx, () => ({ decks: [], boxes: [] })],
@@ -48,6 +57,15 @@ describe('Decks Container tests', () => {
 
   it('add deck and click on it', async () => {
     const scope = fork({
+      values: [
+        [
+          $userData,
+          {
+            username: 'my-usrname',
+            userId: '1111',
+          },
+        ],
+      ],
       handlers: [
         [getDecksFx, () => ({ decks: [], boxes: [] })],
         [

@@ -24,7 +24,6 @@ onAuthStateChanged(firebaseAuth, (user) => {
 
   userStatusChecked(true);
 });
-userStatusChecked(true);
 
 function App() {
   const settings = useUnit($settings);
