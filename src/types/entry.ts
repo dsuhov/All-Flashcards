@@ -33,6 +33,8 @@ const BoxNumber = Union(
   Literal(7)
 );
 
+export type BoxNumber = Static<typeof BoxNumber>;
+
 export const BoxRT = Record({
   boxId: BoxIdRT,
   deckId: DeckIdRT,
@@ -75,14 +77,15 @@ export type DecksAndBoxesFilled = {
 
 export interface Definition {
   text: string;
-  examples?: string;
+  examples?: string[];
 }
 
 export interface Entry {
   entryId: EntryId;
+  boxId: BoxId;
+  deckid: DeckId;
   entryText: string;
   definitions?: Definition[];
+  comment?: string;
   transcription?: string;
-  box: BoxId;
-  deck: DeckId;
 }

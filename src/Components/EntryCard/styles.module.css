@@ -1,0 +1,33 @@
+.removeButton {
+  color: var(--g-color-line-generic-accent);
+}
+.editButton {
+  color: var(--g-color-line-generic-accent);
+}
+
+.removeButton:hover {
+  color: var(--g-color-line-danger);
+}
+.editButton:hover {
+  color: var(--g-color-line-generic-active-accent);
+}
+
+.boxIcon {
+  color: var(--g-color-text-secondary);
+}
+.boxIcon.boxIcon_learned {
+  color: var(--g-color-line-positive);
+}
+
+.title {
+  margin-right: var(--g-spacing-2);
+}
+
+.definitions {
+  border-radius: var(--g-spacing-1);
+}
+
+.exText {
+  border-left: 1px solid var(--g-color-base-generic-medium);
+  padding-left: var(--g-spacing-2);
+}
