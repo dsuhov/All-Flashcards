@@ -1,0 +1,28 @@
+.rsw-editor {
+  width: 100%;
+  border: 1px solid var(--g-color-line-generic);
+  border-radius: var(--g-border-radius-m);
+}
+
+.rsw-toolbar {
+  background-color: var(--g-color-base-generic);
+  border-bottom: 1px solid var(--g-color-line-generic) s;
+  outline: none;
+}
+
+.rsw-btn {
+  color: var(--g-color-text-primary);
+}
+
+.rsw-ce[contentEditable='true']:empty:not(:focus):before {
+  color: var(--g-color-text-hint);
+}
+
+.rsw-ce {
+  color: var(--g-color-text-primary);
+  font-family: inherit;
+}
+
+.rsw-ce:focus-visible {
+  outline: none;
+}

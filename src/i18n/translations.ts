@@ -21,11 +21,29 @@ export const translations = {
       'add_deck.input_title': 'Search',
       'add_deck.deck_name_plch': "Deck's name",
 
-      'deck.remove': 'Remove',
+      'deck.remove': 'Delete',
       'deck.toLearn': 'Learn',
       'deck.entriesQuantity': 'Total',
       'deck.onMellowing': 'Waiting',
       'deck.entrieslearned': 'Learned',
+
+      'entryCard.remove': 'Delete',
+      'entryCard.edit': 'Edit',
+      'entryCard.show': 'Show',
+      'entryCard.hide': 'Hide',
+
+      'entryEditable.box': 'Box',
+
+      'entryNew.addEntry': 'Add entry',
+      'entryNew.entryText': 'Entry text',
+      'entryNew.transcription': 'Transcription',
+      'entryNew.example': 'Example',
+      'entryNew.addExample': 'Add example',
+      'entryNew.definition': 'Definition',
+      'entryNew.fieldEmpty': 'Entry field cannot be empty',
+      'entryNew.definitionEmpty':
+        'Definition cannot be empty if there are examples',
+      'entryNew.addDefinition': 'Add definition',
     },
   },
   rus: {
@@ -55,6 +73,24 @@ export const translations = {
       'deck.entriesQuantity': 'Всего',
       'deck.onMellowing': 'На созревании',
       'deck.entrieslearned': 'Выучено',
+
+      'entryCard.remove': 'Удалить',
+      'entryCard.edit': 'Редактировать',
+      'entryCard.show': 'Показать',
+      'entryCard.hide': 'Скрыть',
+
+      'entryEditable.box': 'Коробка',
+
+      'entryNew.addEntry': 'Добавить запись',
+      'entryNew.entryText': 'Текст записи',
+      'entryNew.transcription': 'Транскрипция',
+      'entryNew.example': 'Пример',
+      'entryNew.addExample': 'Добавить пример',
+      'entryNew.definition': 'Определение',
+      'entryNew.fieldEmpty': 'Поле записи не может быть пустым',
+      'entryNew.definitionEmpty':
+        'Определение не может быть пустым, если есть примеры',
+      'entryNew.addDefinition': 'Добавить определение',
     },
   },
 };

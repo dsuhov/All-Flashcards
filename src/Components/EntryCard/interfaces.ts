@@ -1,9 +1,7 @@
-import { Entry } from '@/types/entry';
-import { BoxNumber, EntryId } from '@/types/entry';
+import { FilledEntry } from '@/types/entry';
+import { EntryId } from '@/types/entry';
 
-export interface EntryCardProps extends Entry {
-  currentBox: BoxNumber;
-  isLearned: boolean;
+export interface EntryCardProps extends Omit<FilledEntry, 'boxId'> {
   onDelete: (entryId: EntryId) => void;
   onEdit: (entryId: EntryId) => void;
 }

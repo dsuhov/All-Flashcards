@@ -35,7 +35,7 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
       { content: t('settings.light'), value: 'light' },
       { content: t('settings.dark'), value: 'dark' },
     ],
-    []
+    [t]
   );
 
   const onChangeSettingsHandler = () => {

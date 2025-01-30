@@ -3,6 +3,8 @@ import type { Preview } from '@storybook/react';
 import { ThemeProvider } from '@gravity-ui/uikit';
 
 import '../src/i18n/i18n.config';
+
+import '../src/index.css';
 import '@gravity-ui/uikit/styles/fonts.css';
 import '@gravity-ui/uikit/styles/styles.css';
 

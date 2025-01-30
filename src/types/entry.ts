@@ -22,7 +22,7 @@ export const DeckDataRT = Record({
   linkTitle: String,
 });
 
-const BoxNumber = Union(
+export const BoxNumber = Union(
   Literal(0),
   Literal(1),
   Literal(2),
@@ -30,7 +30,8 @@ const BoxNumber = Union(
   Literal(4),
   Literal(5),
   Literal(6),
-  Literal(7)
+  Literal(7),
+  Literal(8)
 );
 
 export type BoxNumber = Static<typeof BoxNumber>;
@@ -75,17 +76,29 @@ export type DecksAndBoxesFilled = {
   boxes: BoxFilled[];
 };
 
+export const Definition = Record({
+  text: String,
+  examples: Array(String).optional(),
+});
+
+export const Entry = Record({
+  entryId: EntryIdRT,
+  boxId: BoxIdRT,
+  deckid: DeckIdRT,
+  entryText: String,
+  definitions: Array(Definition).optional(),
+  transcription: String.optional(),
+});
+
+export const FilledEntry = Entry.extend({
+  currentBox: BoxNumber,
+});
+
+export type FilledEntry = Static<typeof FilledEntry>;
+
 export interface Definition {
   text: string;
   examples?: string[];
 }
 
-export interface Entry {
-  entryId: EntryId;
-  boxId: BoxId;
-  deckid: DeckId;
-  entryText: string;
-  definitions?: Definition[];
-  comment?: string;
-  transcription?: string;
-}
+export type Entry = Static<typeof Entry>;

@@ -1,11 +1,11 @@
 import { Flex, Box, Loader } from '@gravity-ui/uikit';
 import { useUnit, useGate } from 'effector-react';
 
+import { DecksGate } from '@/models/decks';
 import { DeckCard } from '@/Components/DeckCard';
 import { AddDeck } from '@/Components/AddDeck';
 
 import {
-  DecksGate,
   $filledDecks,
   $loadingDecks,
   $isDeckNameOpen,
@@ -21,8 +21,6 @@ import {
 import styles from './styles.module.css';
 
 export const DecksContainer = () => {
-  useGate(DecksGate);
-
   const [
     filledDecks,
     loadingDecks,
@@ -46,6 +44,8 @@ export const DecksContainer = () => {
     deckNameInputChanged,
     deckNameInputSaved,
   ]);
+
+  useGate(DecksGate);
 
   const decks = filledDecks
     .sort((a, b) => {
@@ -82,7 +82,7 @@ export const DecksContainer = () => {
       />
       <Flex direction="column" gap={2} spacing={{ mt: 2 }}>
         {decks}
-        {!decks && loadingDecks && (
+        {decks.length === 0 && loadingDecks && (
           <Flex justifyContent="center">
             <Loader size="m" />
           </Flex>

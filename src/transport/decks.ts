@@ -2,7 +2,7 @@ import { collection, getDocs, addDoc } from 'firebase/firestore';
 
 import {
   USERS_COLLECTION,
-  DECKS_COLLEACTION,
+  DECKS_COLLECTION,
   BOXES_COLLECTION,
 } from '@/constants';
 
@@ -14,7 +14,7 @@ export const getDecks = async (userId: string) => {
   const boxesData: unknown[] = [];
 
   const decksDataSnapshot = await getDocs(
-    collection(db, USERS_COLLECTION, userId, DECKS_COLLEACTION)
+    collection(db, USERS_COLLECTION, userId, DECKS_COLLECTION)
   );
   const boxesDataSnapshot = await getDocs(
     collection(db, USERS_COLLECTION, userId, BOXES_COLLECTION)
@@ -46,7 +46,7 @@ export const addDeck = async (
   linkName: string
 ) => {
   const newDeckDocRef = await addDoc(
-    collection(db, USERS_COLLECTION, userId, DECKS_COLLEACTION),
+    collection(db, USERS_COLLECTION, userId, DECKS_COLLECTION),
     {
       title: newDeckName,
       linkTitle: linkName,

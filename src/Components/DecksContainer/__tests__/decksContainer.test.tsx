@@ -17,6 +17,8 @@ const slugMini = (str: string) => str.toLowerCase().replace(/\s/, '_');
 
 jest.mock('slug', () => (arg: string) => slugMini(arg));
 
+window.Date.now = () => 1737666000000;
+
 jest.mock('../../../firebase.config.ts', () => {
   return {};
 });
@@ -125,10 +127,10 @@ describe('Decks Container tests', () => {
       }, 500)
     );
 
-    expect(await within(decks[0]).findByText(`Всего: 5`));
-    expect(await within(decks[0]).findByText(`На созревании: 3`));
-    expect(await within(decks[0]).findByText(`Выучено: 1`));
-    expect(await within(decks[0]).findByText(`Учить: 1`));
+    expect(await within(decks[1]).findByText(`Всего: 4`));
+    expect(await within(decks[1]).findByText(`На созревании: 1`));
+    expect(await within(decks[1]).findByText(`Выучено: 1`));
+    expect(await within(decks[1]).findByText(`Учить: 2`));
   });
 
   it('on Learn button goes to page learn', async () => {
@@ -153,7 +155,7 @@ describe('Decks Container tests', () => {
     await userEvent.click(deckLearnBtn);
 
     expect(window.location.pathname).toBe(
-      `/${DECKS_ROUTE}/${dummyDecks[0].linkTitle}/${LEARN_ROUTE}`
+      `/${DECKS_ROUTE}/${dummyDecks[2].linkTitle}/${LEARN_ROUTE}`
     );
   });
 

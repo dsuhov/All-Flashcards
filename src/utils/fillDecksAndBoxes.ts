@@ -14,15 +14,12 @@ const DAY = 1000 * 60 * 60 * 24;
  */
 const timeMultyplier = [0, 1, 2, 3, 5, 7, 10, 15];
 
-const checkStatus = (box: Box, currentTime: number): BoxStatus => {
+export const checkStatus = (box: Box, currentTime: number): BoxStatus => {
   if (box.box === 0) {
     return 'waitinig';
   }
 
-  if (
-    box.box === 7 &&
-    currentTime - box.lastStudied > timeMultyplier[box.box] * DAY
-  ) {
+  if (box.box === 8) {
     return 'learned';
   }
 

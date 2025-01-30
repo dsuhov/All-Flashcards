@@ -8,12 +8,10 @@ import {
 
 import { createGate } from 'effector-react';
 import slug from 'slug';
-import { t } from 'i18next';
 
 import { $userData } from './auth';
+import { showErrorFx } from './error';
 import { getDecks, addDeck } from '@/transport/decks';
-import { toaster } from '@/shared/toaster';
-import { i18n } from '@/i18n/i18n.config';
 
 import { DeckData, DecksAndBoxes } from '@/types/entry';
 import { fillDecksAndBoxes } from '@/utils/fillDecksAndBoxes';
@@ -61,18 +59,6 @@ export const addDeckFx = createEffect<
   return addDeck(userId, newDeckName, slug(newDeckName));
 });
 
-const showErrorFx = createEffect<string, void>((errMsg) => {
-  console.error('getDecks error', errMsg);
-
-  toaster.add({
-    name: i18n.t('error'),
-    title: errMsg,
-    content: t('dataError'),
-    theme: 'danger',
-    autoHiding: 10000,
-    isClosable: false,
-  });
-});
 /** LOGIC */
 
 /** load Decks on mount */

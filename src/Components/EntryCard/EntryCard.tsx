@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import sanitizeHtml, { IOptions } from 'sanitize-html';
 import {
   Card,
   Icon,
@@ -11,19 +10,13 @@ import {
 } from '@gravity-ui/uikit';
 import { TrashBin, Tray, Pencil } from '@gravity-ui/icons';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
 
+import { BOX_LEARNED } from '@/constants';
 import { DEFAULT_TEST_ID } from './constants';
 import { EntryCardProps } from './interfaces';
 
 import styles from './styles.module.css';
-
-const sanitizeHtmlOpts: IOptions = {
-  allowedTags: ['b', 'i', 'em', 'strong', 'a', 'br'],
-};
-
-const clean = (str: string) => {
-  return sanitizeHtml(str, sanitizeHtmlOpts);
-};
 
 export const EntryCard = (props: EntryCardProps) => {
   const {
@@ -32,10 +25,11 @@ export const EntryCard = (props: EntryCardProps) => {
     definitions,
     transcription,
     currentBox,
-    isLearned,
     onDelete,
     onEdit,
   } = props;
+
+  const { t } = useTranslation();
 
   const onDeleteHandler = () => onDelete(entryId);
 
@@ -53,7 +47,7 @@ export const EntryCard = (props: EntryCardProps) => {
           <Text
             variant="body-2"
             dangerouslySetInnerHTML={{
-              __html: clean(definition.text),
+              __html: definition.text,
             }}
           />
           {definition.examples && (
@@ -78,16 +72,14 @@ export const EntryCard = (props: EntryCardProps) => {
             <>
               <Icon
                 className={cn(styles.boxIcon, {
-                  [styles.boxIcon_learned]: isLearned,
+                  [styles.boxIcon_learned]: currentBox === BOX_LEARNED,
                 })}
                 size={16}
                 data={Tray}
               />
-              {currentBox <= 7 && !isLearned && (
-                <Text color="secondary" qa={DEFAULT_TEST_ID.BOX_COUNT}>
-                  {currentBox}
-                </Text>
-              )}
+              <Text color="secondary" qa={DEFAULT_TEST_ID.BOX_COUNT}>
+                {currentBox}
+              </Text>
             </>
           )}
         </Flex>
@@ -95,7 +87,7 @@ export const EntryCard = (props: EntryCardProps) => {
           <Button
             view="flat"
             size="s"
-            title="Удалить"
+            title={t('entryCard.remove')}
             className={styles.editButton}
             onClick={onDeleteHandler}
             qa={DEFAULT_TEST_ID.REMOVE_BTN}
@@ -105,7 +97,7 @@ export const EntryCard = (props: EntryCardProps) => {
           <Button
             view="flat"
             size="s"
-            title="Редактировать"
+            title={t('entryCard.edit')}
             className={styles.removeButton}
             onClick={onEditHandler}
             qa={DEFAULT_TEST_ID.REMOVE_BTN}
@@ -125,7 +117,7 @@ export const EntryCard = (props: EntryCardProps) => {
         <Disclosure.Summary>
           {(props) => (
             <Button {...props} view="flat-info" qa={DEFAULT_TEST_ID.SHOW_BTN}>
-              {props.expanded ? 'Скрыть' : 'Показать'}
+              {props.expanded ? t('entryCard.hide') : t('entryCard.show')}
             </Button>
           )}
         </Disclosure.Summary>
