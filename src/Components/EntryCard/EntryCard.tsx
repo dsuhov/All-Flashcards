@@ -27,6 +27,7 @@ export const EntryCard = (props: EntryCardProps) => {
     currentBox,
     onDelete,
     onEdit,
+    pending,
   } = props;
 
   const { t } = useTranslation();
@@ -87,20 +88,22 @@ export const EntryCard = (props: EntryCardProps) => {
           <Button
             view="flat"
             size="s"
-            title={t('entryCard.remove')}
+            title={t('entryCard.edit')}
             className={styles.editButton}
-            onClick={onDeleteHandler}
+            onClick={onEditHandler}
             qa={DEFAULT_TEST_ID.REMOVE_BTN}
+            loading={pending}
           >
             <Icon data={Pencil} />
           </Button>
           <Button
             view="flat"
             size="s"
-            title={t('entryCard.edit')}
+            title={t('entryCard.remove')}
             className={styles.removeButton}
-            onClick={onEditHandler}
+            onClick={onDeleteHandler}
             qa={DEFAULT_TEST_ID.REMOVE_BTN}
+            loading={pending}
           >
             <Icon data={TrashBin} />
           </Button>

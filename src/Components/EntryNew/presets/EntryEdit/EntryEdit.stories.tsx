@@ -46,6 +46,7 @@ export const EntryEditStory: Story = {
     ],
     transcription: 'Some transcription',
     currentBox: 5,
+    pending: false,
   },
 };
 

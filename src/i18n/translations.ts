@@ -44,6 +44,8 @@ export const translations = {
       'entryNew.definitionEmpty':
         'Definition cannot be empty if there are examples',
       'entryNew.addDefinition': 'Add definition',
+
+      'entryEdit.box': 'Box',
     },
   },
   rus: {
@@ -91,6 +93,8 @@ export const translations = {
       'entryNew.definitionEmpty':
         'Определение не может быть пустым, если есть примеры',
       'entryNew.addDefinition': 'Добавить определение',
+
+      'entryEdit.box': 'Коробка',
     },
   },
 };

@@ -233,7 +233,7 @@ describe('EntryNew component', () => {
     await userEvent.click(saveBtn);
 
     const error = screen.getByText(t('entryNew.definitionEmpty'));
-    screen.debug();
+
     expect(error).toBeInTheDocument();
     expect(onSave).not.toHaveBeenCalled();
   });

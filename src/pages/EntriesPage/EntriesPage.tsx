@@ -8,21 +8,39 @@ import { useUnit, useGate } from 'effector-react';
 import styles from './styles.module.css';
 
 import { EntryCard } from '@/Components/EntryCard';
+import { EntryEdit } from '@/Components/EntryNew';
 import { AddEntryBtn } from '@/Components/AddEntryBtn';
-import { EntriesGate, $entriesData, $isEntriesPending } from '@/models/entries';
-
-// import { EntryId } from '@/types/entry';
+import {
+  EntriesGate,
+  $entriesData,
+  $isEntriesPending,
+  $editableEntryId,
+  $isUpdateEntryPending,
+  entryEditClicked,
+  entryUpdated,
+  entryDeleted,
+} from '@/models/entries';
 
 export const EntriesPage = () => {
   const { t } = useTranslation();
   const { deckLink } = useParams<{ deckLink: string }>();
 
-  // const [editableEntryId, setEditableEntryId] = useState<EntryId | null>(null);
-  // const [isAddingNewEntry, setIsAddingNewEntry] = useState(false);
-
-  const [entriesData, isEntriesPending] = useUnit([
+  const [
+    entriesData,
+    isEntriesPending,
+    editableEntryId,
+    entryEditClickedEvt,
+    entryUpdatedEvt,
+    isUpdateEntryPending,
+    entryDeletedEvt,
+  ] = useUnit([
     $entriesData,
     $isEntriesPending,
+    $editableEntryId,
+    entryEditClicked,
+    entryUpdated,
+    $isUpdateEntryPending,
+    entryDeleted,
   ]);
 
   useGate(EntriesGate, deckLink || '');
@@ -33,16 +51,24 @@ export const EntriesPage = () => {
     }
 
     const entriesToRender = entriesData.entries.map((entry) => {
-      // if (entry.entryId === editableEntryId) {
-      //   return <h1>Editable</h1>;
-      // }
+      if (entry.entryId === editableEntryId) {
+        return (
+          <EntryEdit
+            {...entry}
+            key={entry.entryId}
+            onSave={entryUpdatedEvt}
+            onCancel={() => entryEditClickedEvt(null)}
+            pending={isUpdateEntryPending}
+          />
+        );
+      }
 
       return (
         <EntryCard
           {...entry}
           key={entry.entryId}
-          onDelete={() => console.log('delete')}
-          onEdit={() => console.log('edit')}
+          onDelete={entryDeletedEvt}
+          onEdit={() => entryEditClickedEvt(entry.entryId)}
         />
       );
     });
@@ -52,8 +78,14 @@ export const EntriesPage = () => {
     // }
 
     return entriesToRender;
-    // }, [entriesData, isAddingNewEntry, editableEntryId]);
-  }, [entriesData]);
+  }, [
+    entriesData,
+    editableEntryId,
+    entryEditClickedEvt,
+    entryUpdatedEvt,
+    isUpdateEntryPending,
+    entryDeletedEvt,
+  ]);
 
   return (
     <>
@@ -74,6 +106,9 @@ export const EntriesPage = () => {
           }
         />
       </Box>
+      <Box spacing={{ mb: 2, px: 2 }}>
+        <AddEntryBtn onAddEntry={() => console.log('AddEntryBtn clicked')} />
+      </Box>
       {isEntriesPending && (
         <Flex justifyContent="center">
           <Loader size="m" />
@@ -81,7 +116,6 @@ export const EntriesPage = () => {
       )}
       {entries.length > 0 && !isEntriesPending && (
         <Flex direction="column" gap={2} spacing={{ px: 2 }}>
-          <AddEntryBtn onAddEntry={() => console.log('AddEntryBtn clicked')} />
           {entries}
         </Flex>
       )}

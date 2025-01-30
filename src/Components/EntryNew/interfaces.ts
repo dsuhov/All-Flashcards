@@ -17,21 +17,20 @@ export const NewEntryContent = Entry.pick(
 );
 
 export type NewEntryContent = Static<typeof NewEntryContent>;
-export type UpdatableEntryContent = Omit<FilledEntry, 'boxId' | 'deckid'>;
+export type UpdatableEntryContent = Omit<FilledEntry, 'deckid'>;
 
 export interface EntryEditableProps extends UpdatableEntryContent {
   onCancel: () => void;
-  onSave: (
-    updatedEntryContent: UpdatableEntryContent,
-    entryId: FilledEntry['entryId']
-  ) => void;
+  onSave: (updatedEntryContent: UpdatableEntryContent) => void;
+  pending?: boolean;
 }
 
 export interface EntryNewProps {
   onSave: (newEntryContent: NewEntryContent[]) => void;
   onCancel: () => void;
   showAddEntryBtn?: boolean;
-  defaultEntryContent?: UpdatableEntryContent;
+  defaultEntryContent?: NewEntryContent;
+  pending?: boolean;
 }
 
 export type ValidateEntriesFieldsResult =

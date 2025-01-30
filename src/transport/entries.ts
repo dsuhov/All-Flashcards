@@ -1,4 +1,11 @@
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  writeBatch,
+  doc,
+} from 'firebase/firestore';
 
 import {
   USERS_COLLECTION,
@@ -7,9 +14,14 @@ import {
   DECKS_COLLECTION,
 } from '@/constants';
 
+import { Box, BoxRT, Entry, DeckDataRT, DeckData } from '@/types/entry';
 import { db } from '@/firebase.config';
-import { Entry, DeckDataRT, DeckData, Box, BoxRT } from '@/types/entry';
-import { GetEntriesOpts } from '@/models/entries';
+import {
+  GetEntriesOpts,
+  UpdateEntryOpts,
+  UpdatedEntryData,
+  RemoveEntryOpts,
+} from '@/models/entries';
 
 export const getEntries = async ({ deckLink, userId }: GetEntriesOpts) => {
   if (!userId || !deckLink) {
@@ -68,4 +80,73 @@ export const getEntries = async ({ deckLink, userId }: GetEntriesOpts) => {
   });
 
   return { deck: decks[0], boxes, entries };
+};
+
+export const updateEntry = async ({
+  updatedEntryData,
+  newBox,
+  userId,
+}: UpdateEntryOpts): Promise<UpdatedEntryData> => {
+  const batch = writeBatch(db);
+
+  if (!userId) {
+    throw new Error('userId is undefined');
+  }
+
+  const entryRef = doc(
+    db,
+    USERS_COLLECTION,
+    userId,
+    ENTRIES_COLLECTION,
+    updatedEntryData.entryId
+  );
+  const boxRef = doc(
+    db,
+    USERS_COLLECTION,
+    userId,
+    BOXES_COLLECTION,
+    updatedEntryData.boxId
+  );
+
+  batch.update(entryRef, updatedEntryData);
+
+  if (newBox) {
+    batch.update(boxRef, newBox);
+  }
+
+  await batch.commit();
+
+  return {
+    updatedEntryData,
+    newBox: newBox ? newBox : null,
+  };
+};
+
+export const removeEntry = async ({
+  boxId,
+  entryId,
+  userId,
+}: RemoveEntryOpts) => {
+  if (!userId) {
+    throw new Error('userId is undefined');
+  }
+
+  const batch = writeBatch(db);
+
+  const entryRef = doc(
+    db,
+    USERS_COLLECTION,
+    userId,
+    ENTRIES_COLLECTION,
+    entryId
+  );
+
+  const boxRef = doc(db, USERS_COLLECTION, userId, BOXES_COLLECTION, boxId);
+
+  batch.delete(entryRef);
+  batch.delete(boxRef);
+
+  await batch.commit();
+
+  return { entryId, boxId };
 };

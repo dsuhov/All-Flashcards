@@ -36,6 +36,7 @@ export const EntryNewStory: Story = {
   args: {
     onSave: fn(),
     onCancel: fn(),
+    pending: false,
   },
 };
 

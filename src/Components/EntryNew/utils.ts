@@ -10,7 +10,7 @@ const cleanDefinition = (
 ) => {
   const updatedDefinition: Record<string, unknown> = {};
 
-  if (definition.text.length > 0) {
+  if (definition.text.length > 0 && definition.text !== '<br>') {
     updatedDefinition.text = definition.text;
   }
 
@@ -108,4 +108,36 @@ export const validateEntriesFields = (entryContents: NewEntryContent[]) => {
   });
 
   return errors;
+};
+
+export const extendDefaultEntryContent = (
+  defaultEntryContent: NewEntryContent
+): NewEntryContentSheme => {
+  const extendedEntryContent = {
+    ...defaultEntryContent,
+  };
+
+  if (extendedEntryContent.definitions) {
+    const extendedDefinitions: NewEntryContentSheme['definitions'] = [];
+
+    extendedEntryContent.definitions.forEach((definition) => {
+      if (definition.examples) {
+        extendedDefinitions.push({
+          ...definition,
+          examples: [...definition.examples, ''],
+        });
+      } else {
+        extendedDefinitions.push({
+          ...definition,
+          examples: [''],
+        });
+      }
+    });
+
+    extendedEntryContent.definitions = extendedDefinitions;
+  } else {
+    extendedEntryContent.definitions = [{ text: '', examples: [''] }];
+  }
+
+  return extendedEntryContent as NewEntryContentSheme;
 };
