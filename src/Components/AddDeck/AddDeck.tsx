@@ -1,7 +1,6 @@
 import { useRef, KeyboardEvent } from 'react';
 
-import { Box, Flex, Button, TextInput, Icon, Popup } from '@gravity-ui/uikit';
-import { Magnifier } from '@gravity-ui/icons';
+import { Box, Flex, Button, TextInput, Popup } from '@gravity-ui/uikit';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 
@@ -32,25 +31,7 @@ export const AddDeck = (props: AddDeckProps) => {
 
   return (
     <Box className={cn(styles.addDeck, className)}>
-      <Flex spacing={{ p: 2 }} justifyContent="space-between" gap={2}>
-        <TextInput
-          placeholder={t('add_deck.find')}
-          /** temporary until search logic is done */
-          onKeyPress={(evt: KeyboardEvent<HTMLInputElement>) => {
-            if (evt.code === 'Enter') {
-              console.log('enter pressed');
-            }
-          }}
-          hasClear
-          size="m"
-          className={styles.input}
-          disabled={pending}
-          endContent={
-            <Button view="flat" size="s" title={t('add_deck.input_title')}>
-              <Icon data={Magnifier} />
-            </Button>
-          }
-        />
+      <Flex spacing={{ p: 2 }} justifyContent="flex-end" gap={2}>
         <Button
           ref={buttonRef}
           onClick={onAddDeckClick}

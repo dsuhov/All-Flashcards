@@ -8,7 +8,7 @@ import { useUnit, useGate } from 'effector-react';
 import styles from './styles.module.css';
 
 import { EntryCard } from '@/Components/EntryCard';
-import { EntryEdit } from '@/Components/EntryNew';
+import { EntryEdit, EntryNew } from '@/Components/EntryNew';
 import { AddEntryBtn } from '@/Components/AddEntryBtn';
 import {
   EntriesGate,
@@ -19,6 +19,10 @@ import {
   entryEditClicked,
   entryUpdated,
   entryDeleted,
+  entryAdded,
+  entryAddStarted,
+  $isAddingNewEntry,
+  $addEntryPending,
 } from '@/models/entries';
 
 export const EntriesPage = () => {
@@ -33,6 +37,10 @@ export const EntriesPage = () => {
     entryUpdatedEvt,
     isUpdateEntryPending,
     entryDeletedEvt,
+    entryAddedEvt,
+    isAddingNewEntry,
+    entryAddStartedEvt,
+    addEntryPending,
   ] = useUnit([
     $entriesData,
     $isEntriesPending,
@@ -41,6 +49,10 @@ export const EntriesPage = () => {
     entryUpdated,
     $isUpdateEntryPending,
     entryDeleted,
+    entryAdded,
+    $isAddingNewEntry,
+    entryAddStarted,
+    $addEntryPending,
   ]);
 
   useGate(EntriesGate, deckLink || '');
@@ -51,6 +63,8 @@ export const EntriesPage = () => {
     }
 
     const entriesToRender = entriesData.entries.map((entry) => {
+      console.log('sdfsdfsdf');
+
       if (entry.entryId === editableEntryId) {
         return (
           <EntryEdit
@@ -73,9 +87,16 @@ export const EntriesPage = () => {
       );
     });
 
-    // if (isAddingNewEntry) {
-    //   entriesToRender.unshift(<h1>Adding new entry</h1>);
-    // }
+    if (isAddingNewEntry) {
+      entriesToRender.unshift(
+        <EntryNew
+          key={0}
+          onSave={entryAddedEvt}
+          onCancel={() => entryAddStartedEvt(false)}
+          pending={addEntryPending}
+        />
+      );
+    }
 
     return entriesToRender;
   }, [
@@ -83,8 +104,12 @@ export const EntriesPage = () => {
     editableEntryId,
     entryEditClickedEvt,
     entryUpdatedEvt,
-    isUpdateEntryPending,
     entryDeletedEvt,
+    isAddingNewEntry,
+    entryAddedEvt,
+    isUpdateEntryPending,
+    entryAddStartedEvt,
+    addEntryPending,
   ]);
 
   return (
@@ -107,7 +132,7 @@ export const EntriesPage = () => {
         />
       </Box>
       <Box spacing={{ mb: 2, px: 2 }}>
-        <AddEntryBtn onAddEntry={() => console.log('AddEntryBtn clicked')} />
+        <AddEntryBtn onAddEntry={() => entryAddStartedEvt(true)} />
       </Box>
       {isEntriesPending && (
         <Flex justifyContent="center">

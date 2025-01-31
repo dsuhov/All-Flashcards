@@ -54,9 +54,9 @@ export const EntryEdit = (props: EntryEditableProps) => {
       <EntryForm
         {...rest}
         defaultEntryContent={{
-          entryText: entryText,
-          transcription: transcription,
-          definitions: definitions,
+          entryText,
+          ...(transcription ? { transcription } : {}),
+          ...(definitions ? { definitions } : {}),
         }}
         onSave={onSaveHandler}
         showAddEntryBtn={false}

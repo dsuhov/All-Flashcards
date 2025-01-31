@@ -38,7 +38,7 @@ const cleanFields = (entryContent: NewEntryContentSheme) => {
     updatedEntry.entryText = entryContent.entryText;
   }
 
-  if (entryContent.transcription.length > 0) {
+  if (entryContent.transcription && entryContent.transcription.length > 0) {
     updatedEntry.transcription = entryContent.transcription;
   }
 

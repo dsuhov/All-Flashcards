@@ -2,7 +2,12 @@ import { sample, createStore, createEffect, createEvent } from 'effector';
 import { createGate } from 'effector-react';
 import { $userData } from '@/models/auth';
 
-import { getEntries, updateEntry, removeEntry } from '@/transport/entries';
+import {
+  getEntries,
+  updateEntry,
+  removeEntry,
+  addNewEntry,
+} from '@/transport/entries';
 import {
   DeckId,
   EntryId,
@@ -13,7 +18,7 @@ import {
 } from '@/types/entry';
 import { showErrorFx, errorHasGottenEvt } from './error';
 import { checkStatus } from '@/utils/fillDecksAndBoxes';
-import { UpdatableEntryContent } from '@/Components/EntryNew';
+import { UpdatableEntryContent, NewEntryContent } from '@/Components/EntryNew';
 
 export type GetEntriesOpts = {
   deckLink: string | undefined;
@@ -83,13 +88,12 @@ export const getEntriesFx = createEffect<GetEntriesOpts, EntriesData, Error>(
 
       filledBoxes.push({
         ...entryBox,
-        status: boxStatus,
+        status: boxStatus as BoxFilled['status'],
       });
 
       return {
         ...entry,
         currentBox: entryBox.box,
-        isLearned: boxStatus === 'learned',
       };
     });
 
@@ -197,6 +201,9 @@ $isUpdateEntryPending.on(
   (_, pending) => pending
 );
 $editableEntryId.reset(updateEntryFx.done);
+// $editableEntryId.reset(EntriesGate.close);
+$editableEntryId.on(EntriesGate.close, () => null);
+
 $entriesData.on(
   updateEntryFx.doneData,
   (state, { updatedEntryData, newBox }) => {
@@ -260,4 +267,92 @@ $entriesData.on(removeEntryFx.doneData, (state, { entryId, boxId }) => {
   const updatedBoxes = boxes.filter((box) => box.boxId !== boxId);
 
   return { ...state, entries: updatedEntries, boxes: updatedBoxes };
+});
+
+// add new entry
+export type AddNewEntryOpts = {
+  deckId: DeckId;
+  userId: string | undefined;
+  newEntries: NewEntryContent[];
+};
+
+type NewAddedEntryData = {
+  box: BoxFilled[];
+  entry: FilledEntry[];
+};
+
+export const $isAddingNewEntry = createStore(false);
+export const $addEntryPending = createStore(false);
+
+export const entryAdded = createEvent<NewEntryContent[] | null>();
+export const entryAddStarted = createEvent<boolean>();
+
+$isAddingNewEntry.on(entryAddStarted, (_, isStarted) => isStarted);
+
+export const entryAddedFx = createEffect<
+  AddNewEntryOpts,
+  NewAddedEntryData,
+  Error
+>(async (opts) => {
+  const { entry, box } = await addNewEntry(opts);
+
+  const newEntries = entry.map((e, idx) =>
+    FilledEntry.check({
+      ...e,
+      currentBox: BoxNumber.check(box[idx].box),
+    })
+  );
+
+  const newBoxes = box.map((b) =>
+    BoxFilled.check({
+      ...b,
+      status: 'waiting',
+    })
+  );
+
+  return { entry: newEntries, box: newBoxes };
+});
+
+$addEntryPending.on(entryAddedFx.pending, (_, pending) => pending);
+
+sample({
+  clock: entryAdded,
+  source: {
+    userData: $userData,
+    entriesData: $entriesData,
+  },
+  filter: (sources, clock) => {
+    return Boolean(
+      sources.userData?.userId &&
+        sources.entriesData?.deckId &&
+        Array.isArray(clock) &&
+        clock.length > 0
+    );
+  },
+  fn: ({ userData, entriesData }, newEntries) => ({
+    deckId: entriesData!.deckId,
+    userId: userData!.userId,
+    newEntries: newEntries!,
+  }),
+  target: entryAddedFx,
+});
+
+$entriesData.on(entryAddedFx.doneData, (state, { entry, box }) => {
+  if (!state) return state;
+
+  return {
+    ...state,
+    entries: [...state.entries, ...entry],
+    boxes: [...state.boxes, ...box],
+  };
+});
+
+$isAddingNewEntry.on(entryAddedFx.finally, () => false);
+
+$isAddingNewEntry.reset(EntriesGate.close);
+
+sample({
+  clock: entryAddedFx.failData,
+  fn: (clockData) => clockData.message,
+  target: errorHasGottenEvt,
 });

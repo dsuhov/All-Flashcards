@@ -113,19 +113,21 @@ export const EntryCard = (props: EntryCardProps) => {
         <Text variant="body-3" wordBreak="break-all" className={styles.title}>
           {entryText}
         </Text>
-        <Text color="hint">{`[${transcription}]`}</Text>
+        {transcription && <Text color="hint">{`[${transcription}]`}</Text>}
       </Box>
 
-      <Disclosure>
-        <Disclosure.Summary>
-          {(props) => (
-            <Button {...props} view="flat-info" qa={DEFAULT_TEST_ID.SHOW_BTN}>
-              {props.expanded ? t('entryCard.hide') : t('entryCard.show')}
-            </Button>
-          )}
-        </Disclosure.Summary>
-        {definitionsComps}
-      </Disclosure>
+      {definitionsComps && (
+        <Disclosure>
+          <Disclosure.Summary>
+            {(props) => (
+              <Button {...props} view="flat-info" qa={DEFAULT_TEST_ID.SHOW_BTN}>
+                {props.expanded ? t('entryCard.hide') : t('entryCard.show')}
+              </Button>
+            )}
+          </Disclosure.Summary>
+          {definitionsComps}
+        </Disclosure>
+      )}
     </Card>
   );
 };

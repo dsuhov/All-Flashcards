@@ -53,11 +53,13 @@ export type DecksAndBoxes = {
   boxes: Box[];
 };
 
-export type BoxStatus = 'waitinig' | 'mellowing' | 'learned';
+export type BoxStatus = 'waiting' | 'mellowing' | 'learned';
 
-export type BoxFilled = Box & {
-  status: BoxStatus;
-};
+export const BoxFilled = BoxRT.extend({
+  status: Union(Literal('waiting'), Literal('mellowing'), Literal('learned')),
+});
+
+export type BoxFilled = Static<typeof BoxFilled>;
 
 export const DeckDataArrayRT = Array(DeckDataRT);
 
@@ -84,7 +86,7 @@ export const Definition = Record({
 export const Entry = Record({
   entryId: EntryIdRT,
   boxId: BoxIdRT,
-  deckid: DeckIdRT,
+  deckId: DeckIdRT,
   entryText: String,
   definitions: Array(Definition).optional(),
   transcription: String.optional(),

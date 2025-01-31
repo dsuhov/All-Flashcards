@@ -16,7 +16,7 @@ const timeMultyplier = [0, 1, 2, 3, 5, 7, 10, 15];
 
 export const checkStatus = (box: Box, currentTime: number): BoxStatus => {
   if (box.box === 0) {
-    return 'waitinig';
+    return 'waiting';
   }
 
   if (box.box === 8) {
@@ -24,7 +24,7 @@ export const checkStatus = (box: Box, currentTime: number): BoxStatus => {
   }
 
   return currentTime - box.lastStudied > timeMultyplier[box.box] * DAY
-    ? 'waitinig'
+    ? 'waiting'
     : 'mellowing';
 };
 
@@ -35,7 +35,7 @@ const updateDeck = (deck: DeckFilled, status: BoxStatus) => {
     case 'learned':
       deck.entrieslearned += 1;
       break;
-    case 'waitinig':
+    case 'waiting':
       deck.entriesToLearn += 1;
       break;
     case 'mellowing':

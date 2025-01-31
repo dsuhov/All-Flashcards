@@ -21,6 +21,7 @@ import {
   UpdateEntryOpts,
   UpdatedEntryData,
   RemoveEntryOpts,
+  AddNewEntryOpts,
 } from '@/models/entries';
 
 export const getEntries = async ({ deckLink, userId }: GetEntriesOpts) => {
@@ -67,7 +68,7 @@ export const getEntries = async ({ deckLink, userId }: GetEntriesOpts) => {
 
   const entriesQuery = query(
     entriesRef,
-    where('deckid', '==', decks[0].deckId)
+    where('deckId', '==', decks[0].deckId)
   );
   const entriesQuerySnapshot = await getDocs(entriesQuery);
   entriesQuerySnapshot.forEach((doc) => {
@@ -149,4 +150,65 @@ export const removeEntry = async ({
   await batch.commit();
 
   return { entryId, boxId };
+};
+
+export const addNewEntry = async ({
+  deckId,
+  userId,
+  newEntries,
+}: AddNewEntryOpts) => {
+  const batch = writeBatch(db);
+
+  if (!userId) {
+    throw new Error('userId is undefined');
+  }
+
+  const entriesRef = collection(
+    db,
+    USERS_COLLECTION,
+    userId,
+    ENTRIES_COLLECTION
+  );
+
+  const boxesRef = collection(db, USERS_COLLECTION, userId, BOXES_COLLECTION);
+
+  const entries = newEntries.map(() => doc(entriesRef));
+  const boxes = newEntries.map(() => doc(boxesRef));
+
+  const entryIds = entries.map((ref) => ref.id);
+  const boxIds = boxes.map((ref) => ref.id);
+
+  const entryDocs = newEntries.map((entry, i) => ({
+    ...entry,
+    boxId: boxIds[i],
+    deckId,
+  }));
+
+  const boxDocs = entryIds.map((entryId) => ({
+    entryId,
+    deckId,
+    box: 0,
+    lastStudied: 0,
+  }));
+
+  entries.forEach((ref, i) => {
+    batch.set(ref, entryDocs[i]);
+  });
+
+  boxes.forEach((ref, i) => {
+    batch.set(ref, boxDocs[i]);
+  });
+
+  await batch.commit();
+
+  return {
+    entry: entryDocs.map((doc, i) => ({
+      ...doc,
+      entryId: entryIds[i],
+    })),
+    box: boxDocs.map((doc, i) => ({
+      ...doc,
+      boxId: boxIds[i],
+    })),
+  };
 };

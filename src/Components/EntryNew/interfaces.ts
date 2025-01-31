@@ -17,7 +17,7 @@ export const NewEntryContent = Entry.pick(
 );
 
 export type NewEntryContent = Static<typeof NewEntryContent>;
-export type UpdatableEntryContent = Omit<FilledEntry, 'deckid'>;
+export type UpdatableEntryContent = Omit<FilledEntry, 'deckId'>;
 
 export interface EntryEditableProps extends UpdatableEntryContent {
   onCancel: () => void;
