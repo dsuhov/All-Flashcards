@@ -1,11 +1,8 @@
-import { KeyboardEvent, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'react-router';
-import { Icon, Box, TextInput, Button, Loader } from '@gravity-ui/uikit';
+import { Box, Loader } from '@gravity-ui/uikit';
 import { Flex } from '@gravity-ui/uikit';
-import { Magnifier } from '@gravity-ui/icons';
-import { useTranslation } from 'react-i18next';
 import { useUnit, useGate } from 'effector-react';
-import styles from './styles.module.css';
 
 import { EntryCard } from '@/Components/EntryCard';
 import { EntryEdit, EntryNew } from '@/Components/EntryNew';
@@ -26,7 +23,6 @@ import {
 } from '@/models/entries';
 
 export const EntriesPage = () => {
-  const { t } = useTranslation();
   const { deckLink } = useParams<{ deckLink: string }>();
 
   const [
@@ -63,8 +59,6 @@ export const EntriesPage = () => {
     }
 
     const entriesToRender = entriesData.entries.map((entry) => {
-      console.log('sdfsdfsdf');
-
       if (entry.entryId === editableEntryId) {
         return (
           <EntryEdit
@@ -114,23 +108,6 @@ export const EntriesPage = () => {
 
   return (
     <>
-      <Box spacing={{ p: 2, mb: 2 }} className={styles.searchBar}>
-        <TextInput
-          placeholder={t('add_deck.find')}
-          onKeyPress={(evt: KeyboardEvent<HTMLInputElement>) => {
-            if (evt.code === 'Enter') {
-              console.log('enter pressed');
-            }
-          }}
-          hasClear
-          size="m"
-          endContent={
-            <Button view="flat" size="s" title={t('add_deck.input_title')}>
-              <Icon data={Magnifier} />
-            </Button>
-          }
-        />
-      </Box>
       <Box spacing={{ mb: 2, px: 2 }}>
         <AddEntryBtn onAddEntry={() => entryAddStartedEvt(true)} />
       </Box>

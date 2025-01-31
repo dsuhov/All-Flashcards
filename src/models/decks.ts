@@ -13,7 +13,7 @@ import { $userData } from './auth';
 import { showErrorFx } from './error';
 import { getDecks, addDeck } from '@/transport/decks';
 
-import { DeckData, DecksAndBoxes } from '@/types/entry';
+import { DeckData, DecksAndBoxes, DeckId } from '@/types/entry';
 import { fillDecksAndBoxes } from '@/utils/fillDecksAndBoxes';
 
 export const DecksGate = createGate();
@@ -146,6 +146,10 @@ sample({
   fn: (clockData) => clockData.message,
   target: showErrorFx,
 });
+
+/** delete deck */
+export const $isDeleteDeckPending = createStore(false);
+export const deckDeleted = createEvent<DeckId>();
 
 /** HELPERS */
 
