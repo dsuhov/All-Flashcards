@@ -196,4 +196,6 @@ describe('Decks Container tests', () => {
 
     expect(await screen.findByText(/My new deck/)).toBeInTheDocument();
   });
+
+  it('remove deck', () => {});
 });

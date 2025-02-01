@@ -26,6 +26,8 @@ export const translations = {
       'deck.entriesQuantity': 'Total',
       'deck.onMellowing': 'Waiting',
       'deck.entrieslearned': 'Learned',
+      'deck.areYouSure': 'Are you sure you want to delete the deck',
+      'deck.wordsToRemove': 'Entries will be removed: ',
 
       'entryCard.remove': 'Delete',
       'entryCard.edit': 'Edit',
@@ -75,6 +77,8 @@ export const translations = {
       'deck.entriesQuantity': 'Всего',
       'deck.onMellowing': 'На созревании',
       'deck.entrieslearned': 'Выучено',
+      'deck.areYouSure': 'Вы точно хотите удалить набор',
+      'deck.wordsToRemove': 'Будет удалено слов: ',
 
       'entryCard.remove': 'Удалить',
       'entryCard.edit': 'Редактировать',

@@ -11,9 +11,9 @@ import slug from 'slug';
 
 import { $userData } from './auth';
 import { showErrorFx } from './error';
-import { getDecks, addDeck } from '@/transport/decks';
+import { getDecks, addDeck, removeDeck } from '@/transport/decks';
 
-import { DeckData, DecksAndBoxes, DeckId } from '@/types/entry';
+import { DeckData, DecksAndBoxes, DeckId, DeckFilled } from '@/types/entry';
 import { fillDecksAndBoxes } from '@/utils/fillDecksAndBoxes';
 
 export const DecksGate = createGate();
@@ -147,10 +147,119 @@ sample({
   target: showErrorFx,
 });
 
-/** delete deck */
-export const $isDeleteDeckPending = createStore(false);
-export const deckDeleted = createEvent<DeckId>();
-
 /** HELPERS */
 
 const isAlphanumericOnly = (str: string) => /^[a-zA-Zа-яА-Я0-9\s]+$/.test(str);
+
+/** delete deck */
+export type DeckDeleteOpts = {
+  userId: string | undefined;
+  deckFilled: DeckFilled;
+};
+
+const $deckToDelete = createStore<DeckFilled | null>(null);
+export const $deckToDeleteDisplay = createStore<{
+  deckTitle: string;
+  entriesCount: number | undefined;
+} | null>(null);
+
+sample({
+  clock: $deckToDelete,
+  filter: (deckToDelete) => !!deckToDelete,
+  fn: (deckToDelete) => {
+    return {
+      deckTitle: deckToDelete!.title,
+      entriesCount: deckToDelete!.boxes?.length,
+    };
+  },
+  target: $deckToDeleteDisplay,
+});
+
+export const $confirmDeletionOpen = createStore(false);
+export const $isDeleteDeckPending = createStore(false);
+
+export const deckDeletionStarted = createEvent<DeckId>();
+
+export const deckDeletionConfirmed = createEvent();
+export const deckDeletionCancelled = createEvent();
+export const displayMessageCleaned = createEvent();
+
+$deckToDeleteDisplay.on(displayMessageCleaned, () => null);
+
+const getDeckToDeleteFx = createEffect<
+  { deckId: DeckId; decksFilled: DeckFilled[] },
+  DeckFilled,
+  Error
+>(({ deckId, decksFilled }) => {
+  const deckToDelete = decksFilled.find(
+    (deckFilled) => deckFilled.deckId === deckId
+  );
+
+  if (!deckToDelete) {
+    throw new Error('getDeckToDeleteFx error: deck ${deckId} not found');
+  }
+
+  return deckToDelete;
+});
+
+sample({
+  clock: deckDeletionStarted,
+  source: $filledDecks,
+  fn: (decksFilled, deckId) => ({
+    deckId,
+    decksFilled,
+  }),
+  target: getDeckToDeleteFx,
+});
+
+sample({
+  clock: getDeckToDeleteFx.failData,
+  fn: (clockData) => clockData.message,
+  target: showErrorFx,
+});
+
+$confirmDeletionOpen.on(getDeckToDeleteFx.done, () => true);
+$confirmDeletionOpen.on(deckDeletionCancelled, () => false);
+
+export const deleteDeckFx = createEffect<DeckDeleteOpts, DeckId, Error>(
+  async (opts) => {
+    const deletedDeckId = await removeDeck(opts);
+
+    return deletedDeckId;
+  }
+);
+
+$confirmDeletionOpen.on(deleteDeckFx.finally, () => false);
+
+sample({
+  clock: deleteDeckFx.failData,
+  fn: (clockData) => clockData.message,
+  target: showErrorFx,
+});
+
+$deckToDelete
+  .on(getDeckToDeleteFx.doneData, (_, data) => data)
+  .on(getDeckToDeleteFx.fail, () => null)
+  .on(DecksGate.close, () => null)
+  .on(deckDeletionCancelled, () => null)
+  .on(deleteDeckFx.done, () => null);
+
+sample({
+  clock: deckDeletionConfirmed,
+  source: {
+    userData: $userData,
+    deckFilled: $deckToDelete,
+  },
+  fn: ({ userData, deckFilled }) => ({
+    userId: userData?.userId,
+    deckFilled: deckFilled as DeckFilled,
+  }),
+  target: deleteDeckFx,
+});
+
+$isDeleteDeckPending.on(deleteDeckFx.pending, (_, pending) => pending);
+
+$decksAndBoxes.on(deleteDeckFx.doneData, (state, data) => ({
+  decks: state.decks.filter((deck) => deck.deckId !== data),
+  boxes: state.boxes.filter((box) => box.deckId !== data),
+}));

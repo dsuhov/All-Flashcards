@@ -1,13 +1,21 @@
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  writeBatch,
+  doc,
+} from 'firebase/firestore';
 
 import {
   USERS_COLLECTION,
   DECKS_COLLECTION,
   BOXES_COLLECTION,
+  ENTRIES_COLLECTION,
 } from '@/constants';
 
 import { db } from '@/firebase.config';
 import { DeckDataArrayRT, DeckDataRT, BoxRTArray } from '@/types/entry';
+import { DeckDeleteOpts } from '@/models/decks';
 
 export const getDecks = async (userId: string) => {
   const decksData: unknown[] = [];
@@ -58,4 +66,45 @@ export const addDeck = async (
     title: newDeckName,
     linkTitle: linkName,
   });
+};
+
+export const removeDeck = async ({ userId, deckFilled }: DeckDeleteOpts) => {
+  if (!userId) {
+    throw new Error('removeDeck: userId is not defined');
+  }
+
+  const batch = writeBatch(db);
+
+  deckFilled.boxes?.forEach((box) => {
+    const boxRef = doc(
+      db,
+      USERS_COLLECTION,
+      userId,
+      BOXES_COLLECTION,
+      box.boxId
+    );
+    const entryRef = doc(
+      db,
+      USERS_COLLECTION,
+      userId,
+      ENTRIES_COLLECTION,
+      box.entryId
+    );
+
+    batch.delete(boxRef);
+    batch.delete(entryRef);
+  });
+
+  const deckRef = doc(
+    db,
+    USERS_COLLECTION,
+    userId,
+    DECKS_COLLECTION,
+    deckFilled.deckId
+  );
+  batch.delete(deckRef);
+
+  await batch.commit();
+
+  return deckFilled.deckId;
 };
