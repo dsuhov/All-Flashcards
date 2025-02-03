@@ -201,7 +201,6 @@ $isUpdateEntryPending.on(
   (_, pending) => pending
 );
 $editableEntryId.reset(updateEntryFx.done);
-// $editableEntryId.reset(EntriesGate.close);
 $editableEntryId.on(EntriesGate.close, () => null);
 
 $entriesData.on(

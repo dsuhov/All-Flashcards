@@ -6,7 +6,7 @@ import { createEffect, createEvent } from 'effector';
 export const errorHasGottenEvt = createEvent<string>();
 
 export const showErrorFx = createEffect<string, void>((errMsg) => {
-  console.error('getDecks error', errMsg);
+  console.error('Error: ', errMsg);
 
   toaster.add({
     name: i18n.t('error'),

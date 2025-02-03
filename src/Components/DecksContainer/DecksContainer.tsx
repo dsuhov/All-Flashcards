@@ -110,9 +110,9 @@ export const DecksContainer = () => {
         error={deckNameError}
         pending={isDeckNamePending}
       />
-      <Flex direction="column" gap={2} spacing={{ mt: 2 }}>
-        {decks}
-        {decks.length === 0 && loadingDecks && (
+      <Flex direction="column" gap={2} spacing={{ mt: 2, pb: 2 }}>
+        {!loadingDecks && decks}
+        {loadingDecks && (
           <Flex justifyContent="center">
             <Loader size="m" />
           </Flex>

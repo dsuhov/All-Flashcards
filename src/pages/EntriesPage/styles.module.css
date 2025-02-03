@@ -1,9 +1,0 @@
-.searchBar {
-  backdrop-filter: blur(8px);
-  border-radius: 0 0 8px 8px;
-  z-index: 100;
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-}

@@ -54,7 +54,7 @@ describe('Decks Container tests', () => {
     render(<Component scope={scope} />);
 
     expect(await screen.findByText('Добавить набор')).toBeInTheDocument();
-    expect(await screen.queryByText('Deck title 0')).not.toBeInTheDocument();
+    expect(screen.queryByText('Deck title 0')).not.toBeInTheDocument();
   });
 
   it('add deck and click on it', async () => {

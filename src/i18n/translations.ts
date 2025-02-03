@@ -30,9 +30,11 @@ export const translations = {
       'deck.wordsToRemove': 'Entries will be removed: ',
 
       'entryCard.remove': 'Delete',
+      'entryCard.confirmRemove': 'Delete card',
       'entryCard.edit': 'Edit',
       'entryCard.show': 'Show',
       'entryCard.hide': 'Hide',
+      'entry.toDelete': 'Delete entry',
 
       'entryEditable.box': 'Box',
 
@@ -46,7 +48,7 @@ export const translations = {
       'entryNew.definitionEmpty':
         'Definition cannot be empty if there are examples',
       'entryNew.addDefinition': 'Add definition',
-
+      'entryNew.add': 'Add',
       'entryEdit.box': 'Box',
     },
   },
@@ -81,9 +83,11 @@ export const translations = {
       'deck.wordsToRemove': 'Будет удалено слов: ',
 
       'entryCard.remove': 'Удалить',
+      'entryCard.confirmRemove': 'Удалить карточку',
       'entryCard.edit': 'Редактировать',
       'entryCard.show': 'Показать',
       'entryCard.hide': 'Скрыть',
+      'entry.toDelete': 'Удалить запись',
 
       'entryEditable.box': 'Коробка',
 
@@ -97,7 +101,7 @@ export const translations = {
       'entryNew.definitionEmpty':
         'Определение не может быть пустым, если есть примеры',
       'entryNew.addDefinition': 'Добавить определение',
-
+      'entryNew.add': 'Добавить',
       'entryEdit.box': 'Коробка',
     },
   },
