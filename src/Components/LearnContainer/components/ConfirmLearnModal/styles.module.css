@@ -1,0 +1,12 @@
+.okIcon {
+  color: var(--g-color-text-positive);
+}
+
+.btnLine {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.centerText {
+  text-align: center;
+}

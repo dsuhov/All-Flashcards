@@ -50,6 +50,12 @@ export const translations = {
       'entryNew.addDefinition': 'Add definition',
       'entryNew.add': 'Add',
       'entryEdit.box': 'Box',
+
+      'learnEntries.ok': 'OK',
+      'learnEntries.dontRemember': "Don't remember",
+      'learnEntries.learnAgain': 'Learn next',
+      'learnEntries.return': 'To the decks',
+      'learnEntries.messageAlllearned': 'All entries have been learned',
     },
   },
   rus: {
@@ -103,6 +109,13 @@ export const translations = {
       'entryNew.addDefinition': 'Добавить определение',
       'entryNew.add': 'Добавить',
       'entryEdit.box': 'Коробка',
+
+      'learnEntries.ok': 'Помню',
+      'learnEntries.dontRemember': 'Не помню',
+
+      'learnEntries.learnAgain': 'Учить ещё',
+      'learnEntries.return': 'К наборам',
+      'learnEntries.messageAlllearned': 'Все слова выучены',
     },
   },
 };

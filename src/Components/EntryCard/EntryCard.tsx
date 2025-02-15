@@ -12,6 +12,7 @@ import { TrashBin, Tray, Pencil } from '@gravity-ui/icons';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 
+import { cleanStylesAttr } from '@/utils/cleanStylesAttr';
 import { BOX_LEARNED } from '@/constants';
 import { DEFAULT_TEST_ID } from './constants';
 import { EntryCardProps } from './interfaces';
@@ -48,7 +49,7 @@ export const EntryCard = (props: EntryCardProps) => {
           <Text
             variant="body-2"
             dangerouslySetInnerHTML={{
-              __html: definition.text,
+              __html: cleanStylesAttr(definition.text),
             }}
           />
           {definition.examples && (

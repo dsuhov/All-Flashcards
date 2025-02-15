@@ -1,0 +1,24 @@
+.container {
+  flex-grow: 1;
+  margin-bottom: var(--g-spacing-3);
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .container {
+    height: 500px;
+    flex-grow: 0;
+  }
+}
+
+.btn:hover::before {
+  background-color: var(
+    --g-button-background-color,
+    var(--_--background-color)
+  );
+}
+
+.boxIcon {
+  color: var(--g-color-text-secondary);
+  margin-right: var(--g-spacing-1);
+}

@@ -7,7 +7,6 @@ import {
   RadioGroup,
   RadioGroupOption,
   Slider,
-  Checkbox,
 } from '@gravity-ui/uikit';
 
 import { SettingsPanelProps } from './interfaces';
@@ -20,7 +19,6 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
   const { onClose, onChangeSettings, userSettings } = props;
 
   const [options, setOptions] = useState(userSettings);
-  const [slider, setSlider] = useState(userSettings.studySessionCards || 5);
 
   const langOptions: RadioGroupOption[] = useMemo(
     () => [
@@ -56,17 +54,6 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
     setOptions((prev) => ({
       ...prev,
       studySessionCards: value as number,
-    }));
-
-    setSlider(value as number);
-  };
-
-  const onAllCardshandler = (evt: ChangeEvent<HTMLInputElement>) => {
-    const isChecked = evt.target.checked;
-
-    setOptions((prev) => ({
-      ...prev,
-      studySessionCards: isChecked ? 0 : slider,
     }));
   };
 
@@ -107,18 +94,9 @@ export const SettingsPanel: FC<SettingsPanelProps> = (props) => {
               hasTooltip
               marks={[5, 10, 15, 20]}
               onUpdate={onCardsChangeHandler}
-              defaultValue={
-                options.studySessionCards !== 0 ? options.studySessionCards : 5
-              }
-              disabled={options.studySessionCards === 0}
+              defaultValue={options.studySessionCards}
             />
           </Box>
-          <Checkbox
-            onChange={onAllCardshandler}
-            checked={options.studySessionCards === 0}
-          >
-            {t('settings.all')}
-          </Checkbox>
         </Box>
         <Flex gap={2}>
           <Button

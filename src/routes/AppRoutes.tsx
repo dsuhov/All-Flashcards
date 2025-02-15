@@ -7,8 +7,9 @@ import { ProtectedRoute } from '@/Components/ProtectedRoute';
 import { Auth } from '@/pages/Auth';
 import { HomePage } from '@/pages/HomePage';
 import { EntriesPage } from '@/pages/EntriesPage';
+import { LearnPage } from '@/pages/LearnPage';
 
-import { DECKS_ROUTE } from '@/constants';
+import { DECKS_ROUTE, LEARN_ROUTE } from '@/constants';
 import { $userStatus } from '@/models/auth';
 
 export const AppRoutes = () => {
@@ -27,6 +28,10 @@ export const AppRoutes = () => {
             <Route
               path={`${DECKS_ROUTE}/:deckLink`}
               element={<EntriesPage />}
+            />
+            <Route
+              path={`${DECKS_ROUTE}/:deckLink/${LEARN_ROUTE}`}
+              element={<LearnPage />}
             />
           </Route>
         </Route>

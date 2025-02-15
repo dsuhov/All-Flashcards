@@ -25,6 +25,7 @@
     "react-i18next": "^15.4.0",
     "react-router": "^7.1.1",
     "react-simple-wysiwyg": "^3.2.0",
+    "react-simply-carousel": "^9.1.8",
     "runtypes": "^6.7.0",
     "slug": "^10.0.0"
   },

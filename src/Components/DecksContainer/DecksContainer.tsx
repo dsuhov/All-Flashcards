@@ -111,8 +111,8 @@ export const DecksContainer = () => {
         pending={isDeckNamePending}
       />
       <Flex direction="column" gap={2} spacing={{ mt: 2, pb: 2 }}>
-        {!loadingDecks && decks}
-        {loadingDecks && (
+        {decks}
+        {loadingDecks && !decks.length && (
           <Flex justifyContent="center">
             <Loader size="m" />
           </Flex>

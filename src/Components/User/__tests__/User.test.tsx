@@ -86,7 +86,7 @@ describe('User tests', () => {
     const settingsData = {
       theme: 'dark',
       language: 'eng',
-      studySessionCards: 0,
+      studySessionCards: 5,
     };
 
     const onChangeSettingsMock = jest.fn(() => Promise.resolve());
@@ -106,7 +106,6 @@ describe('User tests', () => {
     await userEvent.click(screen.getByText('Настройки'));
     await userEvent.click(screen.getByText('English'));
     await userEvent.click(screen.getByText('Темная'));
-    await userEvent.click(screen.getByText('Все'));
     await userEvent.click(screen.getByTitle('Применить'));
 
     expect(onChangeSettingsMock).toHaveBeenCalledWith(settingsData);
@@ -142,8 +141,6 @@ describe('User tests', () => {
     await userEvent.click(screen.getByText('Настройки'));
     await userEvent.click(screen.getByText('English'));
     await userEvent.click(screen.getByText('Темная'));
-    await userEvent.click(screen.getByText('Все'));
-    await userEvent.click(screen.getByText('Все'));
     await userEvent.click(screen.getByTitle('Применить'));
 
     expect(onChangeSettingsMock).toHaveBeenCalledWith(settingsData);

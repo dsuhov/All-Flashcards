@@ -75,6 +75,8 @@ sample({
   target: $loadingDecks,
 });
 
+$loadingDecks.on(getDecksFx.pending, (_, pending) => pending);
+
 sample({
   clock: getDecksFx.failData,
   fn: (clockData) => clockData.message,
