@@ -5,6 +5,7 @@ import {
   getDocs,
   writeBatch,
   doc,
+  serverTimestamp,
 } from 'firebase/firestore';
 
 import {
@@ -70,6 +71,7 @@ export const getEntries = async ({ deckLink, userId }: GetEntriesOpts) => {
     entriesRef,
     where('deckId', '==', decks[0].deckId)
   );
+
   const entriesQuerySnapshot = await getDocs(entriesQuery);
   entriesQuerySnapshot.forEach((doc) => {
     entries.push(
@@ -182,6 +184,7 @@ export const addNewEntry = async ({
     ...entry,
     boxId: boxIds[i],
     deckId,
+    createdAt: serverTimestamp(),
   }));
 
   const boxDocs = entryIds.map((entryId) => ({

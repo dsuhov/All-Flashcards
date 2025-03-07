@@ -1,4 +1,4 @@
-import { Flex, Box, Loader, Dialog, Text } from '@gravity-ui/uikit';
+import { Flex, Box, Loader, Dialog, Text, Skeleton } from '@gravity-ui/uikit';
 import { useUnit, useGate } from 'effector-react';
 import { useTranslation } from 'react-i18next';
 
@@ -111,12 +111,17 @@ export const DecksContainer = () => {
         pending={isDeckNamePending}
       />
       <Flex direction="column" gap={2} spacing={{ mt: 2, pb: 2 }}>
-        {decks}
-        {loadingDecks && !decks.length && (
+        {loadingDecks &&
+          decks &&
+          filledDecks.map((filledDeck) => (
+            <Skeleton key={filledDeck.deckId} style={{ height: '72px' }} />
+          ))}
+        {loadingDecks && !decks && (
           <Flex justifyContent="center">
             <Loader size="m" />
           </Flex>
         )}
+        {!loadingDecks && decks}
       </Flex>
       <Dialog
         onTransitionExited={displayMessageCleanedEvt}
