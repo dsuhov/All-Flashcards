@@ -4,7 +4,13 @@ import { CirclePlus } from '@gravity-ui/icons';
 
 import { useTranslation } from 'react-i18next';
 
-export const AddEntryBtn = ({ onAddEntry }: { onAddEntry: () => void }) => {
+export const AddEntryBtn = ({
+  onAddEntry,
+  disabled,
+}: {
+  onAddEntry: () => void;
+  disabled: boolean;
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -13,6 +19,7 @@ export const AddEntryBtn = ({ onAddEntry }: { onAddEntry: () => void }) => {
       view="outlined-success"
       title={t('entryNew.add')}
       onClick={onAddEntry}
+      disabled={disabled}
     >
       <Icon size={20} data={CirclePlus} />
     </Button>

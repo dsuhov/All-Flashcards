@@ -1,9 +1,9 @@
-import { useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useParams } from 'react-router';
-import { Box, Loader, Dialog, Text } from '@gravity-ui/uikit';
-import { Flex } from '@gravity-ui/uikit';
+import { Box, Flex, Loader, Dialog, Text, TextInput } from '@gravity-ui/uikit';
+
 import { useUnit, useGate } from 'effector-react';
 
 import { EntryCard } from '@/Components/widgets/EntryCard';
@@ -24,7 +24,11 @@ import {
   entryAddStarted,
   $isAddingNewEntry,
   $addEntryPending,
+  entriesSorted,
+  $filteredEntriesData,
 } from '@/models/entries';
+
+import styles from './styles.module.css';
 
 export const EntriesContainer = () => {
   const { t } = useTranslation();
@@ -33,8 +37,11 @@ export const EntriesContainer = () => {
   const entryToDeleteRef = useRef<EntryId | null>(null);
   const [isDelEntryOpen, setIsDelEntryOpen] = useState(false);
 
+  const timeoutId = useRef<number | undefined>();
+
   const [
     entriesData,
+    filteredEntriesData,
     isEntriesPending,
     editableEntryId,
     entryEditClickedEvt,
@@ -45,8 +52,10 @@ export const EntriesContainer = () => {
     isAddingNewEntry,
     entryAddStartedEvt,
     addEntryPending,
+    entriesSortedEvt,
   ] = useUnit([
     $entriesData,
+    $filteredEntriesData,
     $isEntriesPending,
     $editableEntryId,
     entryEditClicked,
@@ -57,6 +66,7 @@ export const EntriesContainer = () => {
     $isAddingNewEntry,
     entryAddStarted,
     $addEntryPending,
+    entriesSorted,
   ]);
 
   useGate(EntriesGate, deckLink || '');
@@ -86,28 +96,30 @@ export const EntriesContainer = () => {
       return [];
     }
 
-    const entriesToRender = entriesData.entries.map((entry) => {
-      if (entry.entryId === editableEntryId) {
+    const entriesToRender = (filteredEntriesData || entriesData).entries
+      .reverse()
+      .map((entry) => {
+        if (entry.entryId === editableEntryId) {
+          return (
+            <EntryEdit
+              {...entry}
+              key={entry.entryId}
+              onSave={entryUpdatedEvt}
+              onCancel={() => entryEditClickedEvt(null)}
+              pending={isUpdateEntryPending}
+            />
+          );
+        }
+
         return (
-          <EntryEdit
+          <EntryCard
             {...entry}
             key={entry.entryId}
-            onSave={entryUpdatedEvt}
-            onCancel={() => entryEditClickedEvt(null)}
-            pending={isUpdateEntryPending}
+            onDelete={onEntryDeleteHandler}
+            onEdit={() => entryEditClickedEvt(entry.entryId)}
           />
         );
-      }
-
-      return (
-        <EntryCard
-          {...entry}
-          key={entry.entryId}
-          onDelete={onEntryDeleteHandler}
-          onEdit={() => entryEditClickedEvt(entry.entryId)}
-        />
-      );
-    });
+      });
 
     if (isAddingNewEntry) {
       entriesToRender.unshift(
@@ -123,6 +135,7 @@ export const EntriesContainer = () => {
     return entriesToRender;
   }, [
     entriesData,
+    filteredEntriesData,
     editableEntryId,
     entryEditClickedEvt,
     entryUpdatedEvt,
@@ -133,10 +146,34 @@ export const EntriesContainer = () => {
     addEntryPending,
   ]);
 
+  const onSearchChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (timeoutId) {
+      clearTimeout(timeoutId.current);
+    }
+
+    timeoutId.current = setTimeout(() => {
+      entriesSortedEvt(value);
+      clearTimeout(timeoutId.current);
+    }, 200);
+  };
+
   return (
     <>
+      <Box spacing={{ mb: 2, px: 2 }} className={styles.searchBar}>
+        <TextInput
+          label="Найти слово"
+          placeholder="..."
+          hasClear
+          onChange={onSearchChangeHandler}
+        />
+      </Box>
       <Box spacing={{ mb: 2, px: 2 }}>
-        <AddEntryBtn onAddEntry={() => entryAddStartedEvt(true)} />
+        <AddEntryBtn
+          onAddEntry={() => entryAddStartedEvt(true)}
+          disabled={filteredEntriesData !== null}
+        />
       </Box>
       {isEntriesPending && (
         <Flex justifyContent="center">

@@ -61,6 +61,8 @@ export const EntriesGate = createGate<string | undefined>();
 
 /** STORES */
 export const $entriesData = createStore<EntriesData | null>(null);
+export const $filteredEntriesData = createStore<EntriesData | null>(null);
+
 export const $isEntriesPending = createStore(false);
 export const $isUpdateEntryPending = createStore(false);
 
@@ -71,6 +73,24 @@ $editableEntryId.on(entryEditClicked, (_, entryId) => entryId);
 
 export const entryUpdated = createEvent<UpdatableEntryContent>();
 export const entryDeleted = createEvent<EntryId>();
+export const entriesSorted = createEvent<string>();
+
+$filteredEntriesData.on(entriesSorted, (_, payload) => {
+  const entriesData = $entriesData.getState();
+
+  if (!entriesData || payload === '') {
+    return null;
+  }
+
+  const filteredEntries = entriesData.entries.filter((entry) =>
+    entry.entryText.includes(payload)
+  );
+
+  return {
+    ...entriesData,
+    entries: filteredEntries,
+  };
+});
 
 /** EFFECTS */
 export const getEntriesFx = createEffect<GetEntriesOpts, EntriesData, Error>(
@@ -352,6 +372,7 @@ $entriesData.on(entryAddedFx.doneData, (state, { entry, box }) => {
 $isAddingNewEntry.on(entryAddedFx.finally, () => false);
 
 $isAddingNewEntry.reset(EntriesGate.close);
+$filteredEntriesData.reset(EntriesGate.close);
 
 sample({
   clock: entryAddedFx.failData,
