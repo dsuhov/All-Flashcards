@@ -1,7 +1,7 @@
 import { useGate, useUnit } from 'effector-react';
 import { Navigate } from 'react-router';
 
-import { LearnEntries } from '../../LearnEntries';
+import { LearnEntries } from '../../widgets/LearnEntries';
 import { ConfirmLearnModal } from './components/ConfirmLearnModal';
 
 import { LearnContainerProps } from './interfaces';
