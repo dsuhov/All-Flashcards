@@ -83,7 +83,7 @@ $filteredEntriesData.on(entriesSorted, (_, payload) => {
   }
 
   const filteredEntries = entriesData.entries.filter((entry) =>
-    entry.entryText.includes(payload)
+    entry.entryText.includes(payload.toLowerCase())
   );
 
   return {
