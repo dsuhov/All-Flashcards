@@ -1,17 +1,19 @@
 import { useState } from 'react';
+
 import { Box, Flex, Button, Icon, Text } from '@gravity-ui/uikit';
-import { Check, Tray, Xmark } from '@gravity-ui/icons';
+import { Check, Tray, Xmark, Volume } from '@gravity-ui/icons';
 import ReactSimplyCarousel from 'react-simply-carousel';
+import { useTranslation } from 'react-i18next';
 
 import { Box as BoxType, BoxNumber, FilledEntry } from '@/types/entry';
 
 import { FlipCard } from './components/FlipCard';
 import { LearnEntriesProps } from './interfaces';
 import { useElementWidth } from './hooks/useElementWidth';
+import { speak } from '@/services/speak';
 
 import styles from './styles.module.css';
 import { CAROUSEL_SETTINGS } from './constants';
-import { useTranslation } from 'react-i18next';
 
 const getNewBox = (entry: FilledEntry, isOk: boolean): BoxType => {
   const { boxId, deckId, entryId, currentBox } = entry;
@@ -62,6 +64,10 @@ export const LearnEntries = (props: LearnEntriesProps) => {
     });
   };
 
+  const onSpeakHandler = () => {
+    speak(entries[activeIndex].entryText);
+  };
+
   return (
     <Flex className={styles.container} direction="column" gap={1}>
       <Flex justifyContent="space-between" spacing={{ px: 2 }}>
@@ -89,9 +95,9 @@ export const LearnEntries = (props: LearnEntriesProps) => {
         )}
       </Box>
 
-      <Flex justifyContent="center" gap="10">
+      <Flex justifyContent="center" alignItems="center" gap="8">
         <Button
-          size="l"
+          size="xl"
           view="outlined-warning"
           className={styles.btn}
           onClick={() => onLearnActionHandler(false)}
@@ -100,9 +106,12 @@ export const LearnEntries = (props: LearnEntriesProps) => {
         >
           <Icon data={Xmark} />
         </Button>
+        <Button size="l" className={styles.btn} onClick={onSpeakHandler}>
+          <Icon data={Volume} />
+        </Button>
         <Button
           view="outlined-success"
-          size="l"
+          size="xl"
           className={styles.btn}
           onClick={() => onLearnActionHandler(true)}
           title={t('learnEntries.ok')}

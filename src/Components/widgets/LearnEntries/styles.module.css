@@ -12,10 +12,13 @@
 }
 
 .btn:hover::before {
-  background-color: var(
-    --g-button-background-color,
-    var(--_--background-color)
-  );
+  background-color: var(--g-button-background-color);
+}
+
+@media (min-width: 576px) {
+  .btn:hover::before {
+    background-color: var(--g-color-base-simple-hover);
+  }
 }
 
 .boxIcon {
