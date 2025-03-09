@@ -18,7 +18,10 @@ import {
 } from '@/types/entry';
 import { showErrorFx, errorHasGottenEvt } from './error';
 import { checkStatus } from '@/utils/fillDecksAndBoxes';
-import { UpdatableEntryContent, NewEntryContent } from '@/Components/EntryNew';
+import {
+  UpdatableEntryContent,
+  NewEntryContent,
+} from '@/Components/widgets/EntryNew';
 
 export type GetEntriesOpts = {
   deckLink: string | undefined;

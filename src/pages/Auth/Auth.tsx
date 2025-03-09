@@ -2,8 +2,9 @@ import { Navigate } from 'react-router';
 import { useUnit } from 'effector-react';
 import { Container, Flex } from '@gravity-ui/uikit';
 
+import { AuthForm } from './AuthForm';
+
 import { $userData } from '@/models/auth';
-import { AuthForm } from '@/Components/AuthForm';
 
 export const Auth = () => {
   const user = useUnit($userData);
