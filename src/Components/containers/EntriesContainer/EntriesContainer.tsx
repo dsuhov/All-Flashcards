@@ -153,7 +153,7 @@ export const EntriesContainer = () => {
       clearTimeout(timeoutId.current);
     }
 
-    timeoutId.current = setTimeout(() => {
+    timeoutId.current = window.setTimeout(() => {
       entriesSortedEvt(value);
       clearTimeout(timeoutId.current);
     }, 200);

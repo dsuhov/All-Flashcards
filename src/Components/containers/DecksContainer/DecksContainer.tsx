@@ -116,7 +116,7 @@ export const DecksContainer = () => {
           filledDecks.map((filledDeck) => (
             <Skeleton key={filledDeck.deckId} style={{ height: '72px' }} />
           ))}
-        {loadingDecks && !decks && (
+        {loadingDecks && !decks.length && (
           <Flex justifyContent="center">
             <Loader size="m" />
           </Flex>

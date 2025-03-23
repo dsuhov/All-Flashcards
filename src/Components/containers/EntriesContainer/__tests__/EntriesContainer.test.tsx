@@ -25,6 +25,14 @@ jest.mock('@/firebase.config.ts', () => {
 });
 
 describe('EntriesPage tests', () => {
+  class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+
+  window.ResizeObserver = ResizeObserver;
+
   const Component = ({ scope }: { scope: Scope }) => (
     <ThemeProvider>
       <Provider value={scope}>
